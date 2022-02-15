@@ -71,7 +71,25 @@
 > * 데이터 = 정수, 문자열, 레코드 등
 > * 작업의 집합 = 삽입, 삭제, 순회, 정렬, 탐색 등 -> 추상적으로 보이는게 추상적 자료구조
 > * 연결리스트 - 자료를 담는 데이터와 다음 주소가 담긴 링크로 구성됨. -> ![image](https://user-images.githubusercontent.com/55529455/154018219-75df447f-a2fa-4e2a-ab48-5194f5572109.png)
+
+```
+class Node:
+    def __init__(self, item):
+        self.data = item
+        self.next = None
+```
+
 > * 머리, 꼬리, 연결리스트 개수를 담은 클래스를 만드는것이 좋다. ![image](https://user-images.githubusercontent.com/55529455/154018317-26462f41-6bcb-4ee4-857f-16f6f698e482.png)
+
+```
+class LinkedList:
+    def __init__(self):
+        self.nodeCount = 0
+        self.head = None
+        self.tail = None
+```
+
+> * 배열과 연속리스트의 차이점
 > * 배열 - 연속한 위치로 저장되고, 이로 인해 간단하게 인덱스 찾기 가능 - O(1)
 > * 연결리스트 - 임의의 위치로 저장이 되기 때문에, 선형탐색으로 인덱스를 찾아야 함. - O(n)
 
