@@ -46,8 +46,6 @@
 > * ![image](https://user-images.githubusercontent.com/55529455/154016554-e04a0921-58b5-4fc9-9c5a-d267417106d0.png) -> 조합계산을 구현 (n개의 각각 다른 원소에서 m개 선택)
 > * from math import factorial as f 를 이용하여 ![image](https://user-images.githubusercontent.com/55529455/154016780-d83aeb67-3c57-48b8-80e2-34f3e412be0f.png) 로 구현
 * n개의 각각 다른 원소에서 m개 선택하는 경우의 수
-```
-![image](https://user-images.githubusercontent.com/55529455/154017079-2246c6f9-6f12-4c78-a6ab-8466e8f80ea3.png)로 표현이 가능함.
-따라서 다음과 같은 점화식을 내릴 수 있음. 
-![image](https://user-images.githubusercontent.com/55529455/154017413-d9604711-1f2c-41a2-a3d2-12024792d64b.png)
-```
+> * ![image](https://user-images.githubusercontent.com/55529455/154017079-2246c6f9-6f12-4c78-a6ab-8466e8f80ea3.png)로 표현이 가능함.
+> * 따라서 다음과 같은 점화식을 내릴 수 있음. 
+> * ![image](https://user-images.githubusercontent.com/55529455/154017413-d9604711-1f2c-41a2-a3d2-12024792d64b.png)
