@@ -138,7 +138,7 @@ class LinkedList:
             curr = curr.next                  ->      result.append(curr.data)
         return result
 ```
-> * 리스트 가져오기의 경우 다음과 같이 변경할 수 있음.
+> * 리스트 참조의 경우 다음과 같이 변경할 수 있음.
 ```
     def getAt(self, pos):
         if pos < 1 or pos > self.nodeCount:	->	if pos < 0 or pos > self.nodeCount:
@@ -152,3 +152,59 @@ class LinkedList:
 
         return curr
 ```
+> * 삽입 할 때, 이전 노드를 알 수 있으면 다음 메서드를 적용 할 수 있음.
+```
+	def insertAfter(self, prev, newNode):
+		newNode.next = prev.next
+		if prev.next is None:
+			self.tail = newNode
+		prev.next = newNode
+		self.nodeCount += 1
+		return True
+```
+> * 기존의 삽입부분의 메서드 또한 변경 되어야 함.
+```
+* 변경 이전
+    def insertAt(self, pos, newNode):
+        if pos < 1 or pos > self.nodeCount + 1:
+            return False
+
+        if pos == 1:
+            newNode.next = self.head
+            self.head = newNode
+
+        else:
+            if pos == self.nodeCount + 1:
+                prev = self.tail
+            else:
+                prev = self.getAt(pos - 1)
+            newNode.next = prev.next
+            prev.next = newNode
+
+        if pos == self.nodeCount + 1:
+            self.tail = newNode
+
+        self.nodeCount += 1
+        return True
+```
+> * 위에 구현된 insertAfter 함수를 호출하여 사용하면 간편해짐.
+> * pos 범위 조건 확인
+> * pos == 1, head 뒤에 새로운 node 삽입
+> * pos == 개수 + 1 인 경우, prev(이전 노드)가 tail이 됨.
+> * 그렇지 않으면, getAt 함수를 통해서 참조한 이전 노드를 insertAfter 함수로 전송.
+```
+* 변경 후
+	def insertAt(self, pos, newNode):
+		if pos < 1 or pos > self.nodeCount + 1:
+			return False
+
+		if pos != 1 and pos == self.nodeCount + 1:
+			prev = self.tail
+		else:
+			prev = self.getAt(pos - 1)
+		return self.insertAfter(prev, newNode)
+```
+> * 노드 삭제의 경우는 prev의 링크는 curr의 링크를 가리키게 하면 된다.
+> * 단, prev가 마지막 node 이면, 삭제할 node가 없으므로 None을 반환해야함.
+> * 또한, 리스트 맨 끝의 node 를 삭제 할 때는 tail의 조정만 있으면 됨.
+> * popAfter, popAt을 통해서 구현 가능함. 위의 예외 사항을 확인하여 구현한다.
