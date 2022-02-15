@@ -208,3 +208,35 @@ class LinkedList:
 > * 단, prev가 마지막 node 이면, 삭제할 node가 없으므로 None을 반환해야함.
 > * 또한, 리스트 맨 끝의 node 를 삭제 할 때는 tail의 조정만 있으면 됨.
 > * popAfter, popAt을 통해서 구현 가능함. 위의 예외 사항을 확인하여 구현한다.
+
+### ● 10강 요약 (양방향 연결 리스트)
+> * 양방향 연결리스트는 연결리스트들이 이전노드와 다음노드를 가리키는 2개의 링크로 연결되어 있음
+> * 장점 = 앞, 뒤로 방문이 가능하므로 작업할 때 유리한 점이 있다.
+> * 단점 = node에 link가 추가되므로 메모리의 양이 늘어나는 점이 있다.
+> * 유의 사항으로는 link가 늘어난 만큼, 삽입, 삭제 등 변화가 일어 날 때, link를 한번 더 잘 연결 해주어야 한다.
+> * 하지만, 이로 인해 예외사항이 많이 없어짐.
+
+* 양방향 연결리스트의 node 구성
+```
+class Node:
+
+    def __init__(self, item):
+        self.data = item
+        self.prev = None
+        self.next = None
+
+```
+
+* 양방향 연결리스트의 구성 -> 이 때, link가 늘어난 만큼, 초기화 할 값도 늘어나게 됨.
+```
+class DoublyLinkedList:
+
+    def __init__(self):
+        self.nodeCount = 0
+        self.head = Node(None)
+        self.tail = Node(None)
+        self.head.prev = None
+        self.head.next = self.tail
+        self.tail.prev = self.head
+        self.tail.next = None
+```
