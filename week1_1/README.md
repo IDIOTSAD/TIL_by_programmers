@@ -138,3 +138,17 @@ class LinkedList:
             curr = curr.next                  ->      result.append(curr.data)
         return result
 ```
+> * 리스트 가져오기의 경우 다음과 같이 변경할 수 있음.
+```
+    def getAt(self, pos):
+        if pos < 1 or pos > self.nodeCount:	->	if pos < 0 or pos > self.nodeCount:
+            return None
+
+        i = 1					->	i = 0
+        curr = self.head
+        while i < pos:
+            curr = curr.next
+            i += 1
+
+        return curr
+```
