@@ -93,7 +93,7 @@
 
 ### ● 18강 요약 (이진 트리)
 > * 이진트리 = 모든 노드의 차수가 2 이하인 트리.
-> ![image](https://user-images.githubusercontent.com/55529455/154479648-57a6bca1-ca3c-4636-b7a0-d2526347943c.png)
+![image](https://user-images.githubusercontent.com/55529455/154479648-57a6bca1-ca3c-4636-b7a0-d2526347943c.png)
 > * size() = 현재 트리에 포함되어 있는 노드의 수, depth() = 현재 트리의 깊이 (height)를 구함.
 > * 트리는 정의 자체가 재귀적이기 때문에, 모든 함수들은 재귀적으로 작성이 가능함.
 > * 순회 = 이진 트리의 모는 노드를 방문하는 일
