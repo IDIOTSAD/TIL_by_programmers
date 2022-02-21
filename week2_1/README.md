@@ -139,3 +139,13 @@
 > * 배포판을 분류하는 기준 - 일반적으로 패키지 시스템으로 계열을 나눔.
 > * DEB = Debian, Ubuntu, Mint
 > * RPM = RHEL, CentOS, Fedora, SuSe
+> * RH - CentOS의 경우, EPEL을 사용하는 경우가 많음.
+> * Extra Packages for Enterprise Linux
+> * Debian은 작고 가벼운 시스템 구축이 목적
+> * Ubuntu = 예쁘고 사용이 편리한 데스크탑 리눅스 구축이 목적
+> * Enterprise Server-side용 패키지 지원이 부족 = Debian 계열의 패키지 방식은 결함과 기능적으로 확장 불가한 구조임.
+> * 인터페이스 = Xfce, compiz 등
+> * 많이 쓰는 배포판 CentOS, Ubuntu, Fedora 등
+> * CentOS = RHEL의 클론이라 엔터프라이즈 환경에서 쓰기 좋음 -> 포털 및 스사트업 기업이 가장 많이 사용
+> * Ubuntu는 IOT에 많이 사용함. 그러나, 스파이웨어나 상용 소프트웨어를 포합 (Amazon)
+> * Fedora는 최신기술을 확인하기 편리, 선행기술 개발, 보안 시스템 개발에 사용됨.
