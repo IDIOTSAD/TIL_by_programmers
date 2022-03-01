@@ -89,6 +89,49 @@ gv = previous highlighted text 영역 불러오기
 o = highlighted text 블록의 시작, 끝 이동 (블록의 위 아래를 재조정할때)
 ```
 # 3장 요약
+> * vi = vi 호환의 vim이며, vim 종류에서 가장 적은 기능, (compact vi, tiny vim 이라 함)
+> * vim = 일반적인 vim, vi + 추가적인 기능, 플러그인 (enhanced vim)
+> * vimx = 가장 많은 기능을 가진 vim, vim + clipboard, X window clipboard 기능 포함
+
+> * 설치
+> * RedHat 계열 = yum -y install vim-X11 (제거 시, install 대신 remove)
+> * Debian 계열 = sudo apt -y install vim-gnome (제거 시, install 대신 remove)
+
+> * vi의 에일리언스
+> * 일반 유저의 경우 alias vi=vim으로 되어 있음.
+> * root 유저로 실행하면 다름. => 최소한의 기능을 가진 vi 에디터가 동작함. root 유저도 alias를 잡아서 사용할 수 있음.
+> * alias를 무시하고자 하면, prefix에서 \를 사용하면된다. ex) \vi
+
+> * vim과 클립보드를 공유하려면, vim --version을 확인해서 clipboard, xterm_clipboard 기능이 포함된지 확인해야함. (vim 7.3 이상 지원)
+
+> * vimx = X window에서 vim과 클립보드를 공유할 수 있도록 빌드된 경우.
+![image](https://user-images.githubusercontent.com/55529455/156129246-4edc4933-e11a-44c1-8340-871223ac53a9.png)
+> * vimx에서 클립보드를 사용하는 방법
+> * 앞서 unnamed 클립 보드 설정을 .vimrc에 넣어둔다.
+> * vimx => gedit : vimx에서 특정 행을 yank 시킨 뒤, gedit과 같은 X 윈도우 에디터 프로그램을 열어서 Ctrl + V 를 해본다.
+> * gedit => vimx : gedit에서 Ctrl + C를 한 후, vimx 화면에서 p로 넣기를 한다.
+
+> * ~/.vimrc 파일에 저장 가능한 명령행 모드 옵션
+> :set name\[=value]
+> .vimrc에 지정할때는 : 는 필요 없음.
+> :set = 현재 옵션 설정을 보여줌
+> :set all = 모든 옵션 설정을 보여줌 (default 까지 보여줌)
+> :set \[no]name = name에 해당하는 옵션을 on/off 함.
+> :set name! = name 옵션의 on/off를 토글함
+> :set name=value = name 옵션에 value값을 할당함.
+
+> * 주로 사용하는 :set 옵션
+> nu : 화면 행 번호 출력
+> rnu : 현재 행을 기준으로 상하의 상대적 행 번호 표시
+> ai : 자동 들여쓰기
+> cindent : C언어 스타일의 들여쓰기
+> ts = value : 화면에 표시될 탭 크기를 value로 지정
+> sw = value : 자동 블록 이동 시 열의 너비
+> fencs=value : 지원할 파일 인코딩 방식 리스트(복수개 지정시 콤마로 구분함.)
+> fenc=value : 현재 파일 인코딩 방식을 지정
+
+> * colorscheme
+> * 옵션이 아니므로 set 접두어를 쓰지 않고 사용함. (:colorscheme)
 
 # 4장 요약
 > * help
