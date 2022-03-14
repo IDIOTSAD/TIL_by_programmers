@@ -133,3 +133,61 @@ disabled (비활성) = SELinux를 이용하지 않음.
 ```
 > * 서버 구성시에는 SELinux에 대한 이해가 필요함. 강제는 어려우므로 허가레벨로 실습하면 좋음.
 
+# 4장 요약 (Ubuntu Network config - legacy)
+> * 네트워크 설정은 legacy, Networkmanager 방식이 있음.
+> * legacy는 사용하지 않음. = 쓰지말라고 배우는 거임.
+> * debian = /etc/network/interfaces
+> * redhat = /etc/sysconfig/network-scripts/*
+> * legacy 방식을 배우는 이유
+> * 혹시나 legacy 방식을 사용하는 커스텀 리눅스를 사용하는 경우
+> * 인터넷 검색을 잘못해서 legacy 방식으로 강제 설정한 경우
+
+# 5장 요약 (NetworkManager)
+> * NetworkManager의 장점
+
+![image](https://user-images.githubusercontent.com/55529455/158127419-2840bb94-991e-4851-a39f-6f4b468e3757.png)
+
+> * UNIX Standard command (POSIX)
+> * ifconfig = interface config = query/control (구식)
+> * route = routing table = query/control
+> * Non-standard command (Linux specific)
+> * ip = net, commands on EL6
+> * nmcli = new commands on EL7 (networkmanager CLI)
+> * ethtool, pifconfig & pethtool (python-ethtool)
+
+> * nmcli
+> * nmcli g\[eneral] => 현재상태 출력 => state(연결, 대기), connectivity(full/none)
+> * nmcli n => 네트워크 상태 조회 (on/off)
+> * nmcli dev => device 확인 (ens33에 주목)
+> * eth# = old style 네트워크 디바이스 이름
+> * Consistent network device naming (new style) = enp5s0, eno1 등등
+```
+en = ethernet
+wl = wireless lan
+ww = wireless wan
+o = on-board-device
+s = hotplug slot
+x = MAC address
+p<bus>s<slot> = PCI geographical location (device id 나옴)
+p<bus>s<slot> = USB port number chain (port 나옴)
+```
+> * nmcli c\[onnection] s\[show] = 연결 상태 보여줌.
+> * nmcli 주요 속성
+> * IPv4 = auto | manual, auto = dhcp, manual = static ip
+> * ipv4.addr = 주소
+> * ipv4.gateway = 게이트웨이
+> * ipv4.dns = dns 서버
+
+> * nmcli con down (connections name) = 연결 끄기, nmcli con up (connections name) = 연결
+> * nmcli con modify (new connection name) connection.id (device name) = connection 이름 변경
+> * 고정 IP로 변경까지 한다면?
+
+![image](https://user-images.githubusercontent.com/55529455/158129341-a2052cea-856e-47e4-addb-00cdde2c8118.png)
+
+> * nmcli c del (device name) = 기존 설정 삭제
+> * nmcli c add con-name (device name) ifname (device name) type ethernet ip4 (ip/서브넷마스크)
+> * nmcli c mod (device name) +ipv4.dns (dns address) = DNS 추가
+> * nmcli dev connect (device name) - 활성화
+> * nmcli networking on - 활성화
+
+# 6장 요약 (Network tools : ss ntstat)
