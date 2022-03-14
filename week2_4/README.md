@@ -191,3 +191,113 @@ p<bus>s<slot> = USB port number chain (port 나옴)
 > * nmcli networking on - 활성화
 
 # 6장 요약 (Network tools : ss ntstat)
+> * network status = 네트워크 상태를 확인하는 유틸리티
+> * netstat -nr, -s, -A, -t, -u, -p (구식 명령어)
+
+> * ss = socket statistics
+```
+-n --numeric
+-a --all
+-l --listening
+-e --extended
+-o --options
+-m --memory
+-p --processes
+```
+![image](https://user-images.githubusercontent.com/55529455/158138791-dab8b284-639d-4ffe-904d-d361d5f7656a.png)
+
+> * Three-way handshake = TCP 접속을 만드는 과정 (3번 왔다 갔다 함, 문제는 잘 안생김)
+> * Four-way handshake = TCP 접속을 해제하는 과정 (4번 왔다 갔다 함.(동시에 끝나면 3번), 문제가 종종 생김. - Passive close 하는 측에서)
+
+> * ss -nt = numeric + tcp => tcp state (establish), ip 주소 등 나옴.
+> * ss state = 네트워크 상태만, -n (numeric만 보여주라) -6 (IP 6만 보여주기)
+> * 4 handshake에선 close-wait, fin-wait-2는 심각한 오류임. close-wait는 매우 위험. (명백한 버그, 소켓을 안닫기 때문에 누수가 계속 일어남.)
+> * fin = 상대가 잘못한 것, close = 내가 잘못한 것
+> * 확인 방법
+> * ss -nt state close-wait state fin-wait-2
+> * watch -d -n 1(1초) ss -nt state close-wait state fin-wait-2
+
+> * address filter = ip, port, cidr 등
+> * ex) ss -n 'dport = :22'(dport = :ssh와 같음)
+> * ss -s = statistic TCP의 소켓 통계가 나옴.
+> * ss -p = show process using socket -> root 유저로 하는 것이 자세하게 나옴.
+
+> * 사용 예제
+
+![image](https://user-images.githubusercontent.com/55529455/158142223-1a9d18f5-6de4-4b54-8dbd-731bc290e00d.png)
+
+![image](https://user-images.githubusercontent.com/55529455/158142276-8bed7863-97af-43ff-bbc3-880bff71ec2b.png)
+
+> * ss -nt -i (속도, 타이머 등 여러가지 정보를 다 알려줌.)
+> * ss와 같이 쓰이는 명령어 = lsof, fuser
+> * 열린 파일을 검색하거나 액션을 행할 수 있는 기능을 가짐. 특정 소켓 주소를 점유하는 프로세스를 찾아낼때, 프로세스를 추적하는 용도로 사용함.
+
+# 7장 요약 (Network tools : ping, trace, route, arp, dig, ethtool)
+> * ping = 상대 호스트의 응답 확인 -c (count), -i (interval), -s (size), -t (ttl), target (addr name)
+> * traceroute = 패킷의 도달 경로를 확인함.
+> * arp = ARP 테이블 : IP와 MAC 주소의 매칭 테이블 -s (스태틱 테이블 이용시)
+> * NIC 교체 후, 통신이 실패하는 경우는? => 고정 IP 주소를 사용하는 기관이나 회사의 경우, 보안이나 IP주소 관리를 위해 고정 ARP 테이블을 사용함.
+> * 점검방법 = ARP 테이블을 확인하여 IP와 MAC의 매칭, 네트워크 관리자에게 교체한 NIC의 MAC과 IP를 알려주기.
+> * resolver = IP 혹은 hostname을 해석함. nameserver를 의미, /etc/resolv.conf에 저장됨. (하지만, NetworkManager의 관리하에 있으면 수정 금지)
+> * /etc/nsswitch.conf에 해석기 및 우선순위 지정
+> * resolver client - nslookup(old), dig(new) 등 
+> * 1.1.1.1 = cloudflare dns, 8.8.8.8 = google dns, 208.67.222.222, 208.67.200.200 = CISCO opendns
+> * ethtool (device name) = 해당 장치에 대한 상태를 설명을 해줌.
+> * 간혹, 시스템이 느려지는 경우는 duplex 문제일 가능성이 큼. speed/duplex를 수정하면 auto negociation에 의해 원상복구 될 수 있음 (장비문제 or 세팅문제)
+> * 혹은 powersave 모드로 작동시 저전력을 위해 자동으로 100baseT로 떨어짐.
+> * ethtool -a (show pause), -A (pause) autoneg on|off, rx on|off, tx on|off, -s (statistics), -k (show offloading, 성능 관련) -K on|off
+
+# 8장 요약 (Network tools : ssh, curl, wget, nc)
+> * ssh = ssh는 통신 구간을 암호화, 암호화 X - telnet 서비스는 구식. (telnet이 하던 프로토콜 테스트 서비스는 nc, curl이 대체)
+> * 기본적으로 리눅스 서버들은 ssh가 탑재, linux는 openssh 사용함.
+> * sshd = ssh daemon (ssh server)를 의미함.
+> * ssh = ssh client, ssh 명령어가 바로 ssh client cli 유틸리티. ssh client gui가 제공되지 않음. MS는 putty 같은거 사용.
+
+> * sshd 서버의 준비 작업
+> * 1. sshd 서버의 설치 여부 확인 - apt list openssh* (RH 계열은 rpm -qa openssh-server )
+> * 2. sshd 서비스가 실행중인지 확인 (listen 상태도 확인. ss -nlt, ss-nltp) -  systemd 기반이면 systemctl status sshd, init 기반이면 service sshd status
+> -> 정지 상태면, systemctl start sshd (service sshd start), 부팅 될 때 자동으로 하려면 systemctl enable sshd (RH는 chkconfig sshd on, debian은 update-rc.d sshd default)
+> * 3. ssh port가 방화벽에 허용되어있는지 확인 (22번) - iptables -nL
+
+> * ssh client
+> * ssh (-p port) (username@ip addr) - port는 기본 22
+> * ssh keygen = -N : new password, -p : 암호변경, -R remote host 키 제거
+> * ssh keygen 키 위치 = ~/.ssh
+
+> * curl
+> * URL을 기반으로 통신하는 기능을 제공, CLI tool과 library 제공
+> * URL 기반의 다양한 프로토콜 지원, libcurl 라이브러리 제공
+> * -C (continue), -O 
+> * curl \<APT URL> 도 가능함
+  
+> * wget
+> * curl과 비슷하지만, 기능은 curl이 더 많음. 다운로드에 특화된 기능이 존재 (mirroring 기능, web site 복제)
+
+> * nc (netcast)
+> * network 기능이 가능한 cat
+> * server, client의 양쪽 기능이 가능, 간단한 간이 서버, 클라이언트로 사용 가능, 바이너리 통신 가능
+
+# 8장 요악 (Network configration : wireless network)
+> * nmcli radio wifi (on|off) - on|off 생략시, status를 보여줌.
+> * rfkill list - 하드웨어 블록을 나타냄, rfkill unblock을 통해서 해제 가능. block 하면 설정
+> * soft blocked가 yes면 가능하지만, hard blocked가 되어있으면 불가능.
+> * soft blocked = 소프트웨어에서 wifi를 비활성화 시키는 기능
+> * hard blocked = embedded 되어있는 WIFI 칩을 BIOS에서 disabled 시킨 경우, 랩탑은 fn + (f*) 키를 이용하여 on/off 가능할 때는 disable되면 hard blocked로 나타남.
+
+> * wicd vs nmcli
+> * NetworkManager 사용 시, wicd는 사용불가함. wicd 설치되어있으면 삭제
+> * wicd = (Wireless Interface Connection Daemon)
+> * nmcli dev = wifi가 보이게 됨.
+> * nmcli dev wifi 하면, 주변 탐지된 wifi가 보이게 됨.
+> * nmcli dev rescan = 새로고침
+> * nmcli dev wifi connect (wifi name) password (wifi password) = wifi 접속
+> * nmcli disconnect (wifi name) = wifi 연결 해제
+
+> * nmcli c(connection) add type (wifi) ifname \'\*\' con-name (syhotspot, want name) autoconnect (yes|no) ssid (hotspot name) = hotspot 설정
+> * nmcli c mod syhotspot 802-11-wireless.mode ap 802-11-wireless.band bg ipv4.method shared ipv4.addr (ip) = hotspot ip 설정
+> * nmcli c mod (syhotspot, want name) 802-11-wireless-security.key-mgmt (vpa-psk) 802-11-wireless-security.psk (password) = hotspot password 설정
+> * nmcli c up syhotspot = hotspot 켜기
+
+> * hostapd
+> * NetworkManager 보다 더  많은 기능을 사용하려면 hostapd를 사용 = AP로 구동을 위한 기능 제공 daemon
+> * 2.4ghz는 괜찮지만, 5ghz의 경우는 나라에 따라서 달라지므로 조심해야함.
