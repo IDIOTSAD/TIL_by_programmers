@@ -16,15 +16,11 @@
 > * OpenCV 주요 함수
 
 ![image](https://user-images.githubusercontent.com/55529455/158310290-04b3a52d-76d0-425e-99c5-58a48b40e4f6.png)
-
 ![image](https://user-images.githubusercontent.com/55529455/158310541-c8fcffa2-b5ca-4897-a146-78ea24384fc1.png)
-
 ![image](https://user-images.githubusercontent.com/55529455/158310633-42577f48-1773-4fe4-99b0-dd9c0b4d3c80.png)
-
 ![image](https://user-images.githubusercontent.com/55529455/158310817-1ffbcc1b-0c7a-4622-b604-777bb0575022.png)
-
 ![image](https://user-images.githubusercontent.com/55529455/158310853-64192318-6f80-49a9-8ed3-2f7ca8f57df8.png)
-
 ![image](https://user-images.githubusercontent.com/55529455/158310887-e4486b0c-4ab7-46fd-ad09-b993766d12f5.png)
 
-
+> * opencv API 도움말
+> * http://docs.opencv.org/
