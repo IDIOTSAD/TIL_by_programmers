@@ -45,6 +45,43 @@
 ![image](https://user-images.githubusercontent.com/55529455/158942074-fadf7797-5c24-485a-ba28-00cad82a4297.png)
 ![image](https://user-images.githubusercontent.com/55529455/158942229-745d8c95-442a-4c98-8d7e-8d9200ea3b20.png)
 
+> * 필터링
+> * 영상에서 필요한 정보만 통과시키고, 원치 않는 정보는 걸러내는 작업
+
+> * 주파수 공간에서의 필터링
+> * 푸리에 변환을 이용하여 영상을 주파수 공간으로 변환하여 필터링을 수행하는 방법 (로우패스필터, 하이패스필터 등을 사용)
+> * 공간적 필터링
+> * 영상의 픽셀 값을 직접 이용하는 필터링 방법 - 대상 좌표의 픽실겞과 주변 픽셀 값을 동시에 사용
+> * 주로 마스크 연산을 이용함 (마스크 ~ 커널) (3x3, 5x5, 7x7)
+> * OpenCV에서는 공간적 필터링 마스크 크기가 커질 경우, 주파수 공간에서의 필터링을 수행함.
+
+> * 다양한 모양과 크기의 마스크
+> * 필터링에 사용되는 마스크는 다양한 크기, 모양을 지정할 수 있지만, 대부분 3x3 정방향 필터를 사용 - 마스크는 보통 홀수로 사용함.
+> * 마스크의 형태와 값에 따라 필터의 역할이 결정됨
+> * 영상을 부드럽게, 날카롭게, 엣지검출, 잡음 제거 등
+
+![image](https://user-images.githubusercontent.com/55529455/158947110-5752b95c-2aa2-4bf9-b7be-ba9dc0e055e6.png)
+> * 여기서 수행하는 연산을 Correlation (Convolution)이라고 함.
+
+![image](https://user-images.githubusercontent.com/55529455/158948233-c80d8447-73a6-4992-ad8c-88cb828e2b48.png)
+![image](https://user-images.githubusercontent.com/55529455/158948456-708ab830-ec32-4f69-a88f-dc68e6f5a308.png)
+![image](https://user-images.githubusercontent.com/55529455/158948769-a7068faf-ac8e-4d8e-adbf-5e94c7094373.png)
+![image](https://user-images.githubusercontent.com/55529455/158949151-cc3e9bb0-9224-429b-8d1f-40c62411215f.png)
+
+> * 엠보싱
+> * 직물이나 종이, 금속판 등에 올록볼록한 형태로 만든 객체의 윤곽 또는 무늬
+> * 엠보싱 필터
+> * 엠보싱 필터는 입력 영상을 엠보싱 느낌이 나도록 변환하는 필터
+> * 결과를 효과적으로 보여주기 위해 결과 영상에 128을 더해서 보여줌.
+
+![image](https://user-images.githubusercontent.com/55529455/158949330-455ab615-8ce2-4baa-a7be-3b999870162f.png)
+
+> * 평균값 필터
+> * 영상의 특정 좌표 값을 주변 픽셀 값들의 산술 평균으로 설정
+> * 픽셀들 간의 그레이 스케일 값 변화가 줄어들어 날카로운 엣지가 무뎌지고, 영상에 있는 잡음의 영향이 사라지는 효과
+> * 3x3은 1/9, 5x5는 1/25가 됨.
+
+![image](https://user-images.githubusercontent.com/55529455/158951055-356027b0-2d70-4645-b1e8-8dd00563b2e9.png)
 
 
 
