@@ -28,3 +28,16 @@
 ![image](https://user-images.githubusercontent.com/55529455/159628451-55ecc317-2779-4524-a9cd-d7835d2748ec.png)
 ![image](https://user-images.githubusercontent.com/55529455/159629058-183e3864-62d9-4635-b906-310d965ca67e.png)
 
+> * 컬러 영상을 밝기 정보와 색 정보로 분할 = Cr, Cb 성분, Y 성분으로
+> * White Balance (color temperature) = 사진을 찍었을 때, 흰색을 흰색답게 처리한 영상
+> * 기능 파트가 문제가 생기면, 사진을 찍으려 할 때, 카메라가 꺼지는 것
+> * 화질 파트가 문제가 생기면, 사진이 이상하게 찍히는 것
+> * 기능 vs 화질 -> 화질이 더 중요함.
+
+![image](https://user-images.githubusercontent.com/55529455/159638026-a569f0bd-c7c7-41e5-9d49-89b50cf80cf3.png)
+
+> * 각각의 이퀄라이제이션에 대해서 다르게 나타남.
+> * 밝기 성분에 대해서만 히스토그램 평활화 수행해야함.
+> * Cr, Cb는 그대로 나둬야 하는 것이 포인트
+> * 
+
