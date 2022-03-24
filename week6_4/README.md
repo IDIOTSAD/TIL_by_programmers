@@ -37,6 +37,29 @@
 ![image](https://user-images.githubusercontent.com/55529455/159850074-4de95c20-ee9a-48ac-8596-7e38feeee6b1.png)
 ![image](https://user-images.githubusercontent.com/55529455/159854014-4f93422b-e509-4ebb-9578-b1f9d1313aa2.png)
 ![image](https://user-images.githubusercontent.com/55529455/159853991-57b1a882-eaf6-44fc-9849-ecb68e765e9f.png)
+![image](https://user-images.githubusercontent.com/55529455/159855194-ecba8725-b654-4f01-a5ec-ebb6150594cc.png)
+![image](https://user-images.githubusercontent.com/55529455/159855642-17739119-dd83-4617-8971-909484ebcdaa.png)
+
+> * 케니 에지 검출기
+> * 좋은 에지 검출기의 조건 = 케니 에지 검출기의 특징
+> * 정확한 검출 = 에지가 아닌 점을 에지로 찾거나 또는 에지를 검출하지 못하는 확률을 치소화
+> * 정확한 위치 = 실제 에지의 중심을 검출
+> * 단일 에지 = 하나의 에지는 하나의 점으로 표현
+
+![image](https://user-images.githubusercontent.com/55529455/159856665-c198a483-7885-41e1-8aa4-8df8e91fe542.png)
+> * 그레디언트 계산 = 픽셀값이 순간적으로 증가하는 크기와 방향을 추출. ex) 바둑판 모양
+> * 비최대 억제 = 하나의 에지가 여러개의 픽셀로 표현되는 현상을 없애기 위해서 그래디언트 크기가 국지적 최대인 픽셀만 에지 픽셀로 설정
+> * 그래디언트 방향에 위치한 두 개의 픽셀과 국지적 최대를 검사함.
+> * 가운데 있는 흰색 부분만 엣지로 추출함. (245 기준으로 봤을 때, 135의 경우 그 바로 옆에 있는 12와 비교하였을때 크기 때문에 무시함.)
+
+> * 히스테리리스 에지 트래킹
+> * 두개의 임계값을 사용 (Tlow, Thigh)
+> * 강한 에지 = ||f|| >= Thigh = 최종 에지로 설정
+> * 약한 에지 = Tlow <= ||f|| < Thigh = 강한 에지와 연결된 픽셀만 최종 에지로 설정.
+> * Tlow 보다 작으면 무조건 에지가 아니고, Thigh 보다 높으면 무조건 에지, Thight과 연결되어 있지만, Tlow보다 큰 에지는 에지라고 판단함.
+
+![image](https://user-images.githubusercontent.com/55529455/159858194-c46bc683-55fa-4737-96d8-0f9f8c6216da.png)
+![image](https://user-images.githubusercontent.com/55529455/159858983-82cd0abe-d45e-4b08-ac3b-9750326c5e8b.png)
 
 
 
