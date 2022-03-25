@@ -36,6 +36,7 @@
 > * 매번 평균 계산하는 것은 번거로운 일임. 이를 해결하기 위해 otsu 알고리즘을 사용함.
 > * otsu 알고리즘은 임의의 지점을 정해서 두 분류로 나누고, 두 분류의 값이 가장 평탄한 지역을 임계값으로 줌. (처음 임계값을 임의로 잡고)
 > * 분산은 차이값의 평균을 계산하는 것. = 편차(값 - 평균)의 제곱의 평균
+> * Image Quality Tuning 가 중요하다고 볼 수 있음.
 
 > * 속도 향상을 위해 허프 그래디언트 메소드 사용
 > * 입력 영상과 동일한 2차원 평면 공간에서 축적 영상을 생성
@@ -43,5 +44,23 @@
 > * 그래디언트 방향에 따라 직선을 그리면서 값을 누적
 > * 영상이 어두운 경우에는 일정 밝기 이상으로 끌어 올려야함. = 캐니에서 미분을 사용하는데, 편차가 적은 경우 안될 수 있음.
 > * 2가지 방법이 존재, 1. 캐니의 범위를 조절함 (전체적으로 줄여줌) 2. 편차의 범위를 늘릴 수 있도록 함.(스트레칭 등) but 노이즈가 생길 수 있다.
-> * 
+
+![image](https://user-images.githubusercontent.com/55529455/160064614-54888993-04c3-4d5b-b622-ca02312f141c.png)
+![image](https://user-images.githubusercontent.com/55529455/160065970-4c320902-9e22-4fb5-90ba-cc9ffe0859d0.png)
+> * 메인 메모리에서 GPU 메모리로 옮기는 과정에서 시간이 걸릴 수 있음.
+> * CPU는 좌표를 변환하면서 점을 찍을 수 있는 고급 기술을 가지지만, GPU는 점을 찍을지 말지에 대한 정도만 하지만, 코어 개수가 많기 때문에 한번에 처리함.
+
+![image](https://user-images.githubusercontent.com/55529455/160067003-9aa4ce81-465f-44c2-9720-328ef1e06415.png)
+> * add 함수 = a의 위치값 + b의 위치값을 더해서 c라는 위치값으로 만듬. = CUDA 커널 함수
+> * 여기서 global은 쿠다가 설치되어있어야 해석 가능함.
+> * cudaMalloc = 쿠다함수. = 변수 동적, Memcpy를 통해서 변수 복사 후, add 함수 수행.
+
+![image](https://user-images.githubusercontent.com/55529455/160067425-77319731-fdb6-453c-97f0-c206cd11b494.png)
+![image](https://user-images.githubusercontent.com/55529455/160067741-bc8560af-2e29-4113-8aff-3c886cf4e4cc.png)
+![image](https://user-images.githubusercontent.com/55529455/160068465-aa176ce1-d8d5-485b-9dcf-373aeaf999a2.png)
+![image](https://user-images.githubusercontent.com/55529455/160069352-150d60a5-ba48-4fa7-a748-1e72d496253d.png)
+
+
+
+
 
