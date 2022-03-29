@@ -150,7 +150,18 @@ mkdir launch
 ![image](https://user-images.githubusercontent.com/55529455/160547680-a1e0e2ef-69f1-41d4-8e3b-2ee5a2dec328.png)
 ![image](https://user-images.githubusercontent.com/55529455/160547724-cd42a2aa-e9f4-469a-8b67-aa2450e87a7e.png)
 ![image](https://user-images.githubusercontent.com/55529455/160547771-1ae8a8e1-b936-4eab-a807-b9fd05d36ff5.png)
+![image](https://user-images.githubusercontent.com/55529455/160548503-49334ff1-62a9-475d-a284-e642fa424d83.png)
+![image](https://user-images.githubusercontent.com/55529455/160548561-d29c121b-b965-4d90-a454-b2c114dfc6af.png)
+![image](https://user-images.githubusercontent.com/55529455/160548620-35d06c5c-0296-42e3-9c49-9ac1f8060d1c.png)
 
+> * 임계값이 높으면 = 검출되는 직선은 적지만, 확실한 직선들이 검출됨.
+> * 반대로 임계값이 낮으면 = 검출되는 직선이 많아지고, 불확실한 직선들이 검출됨.
+> * 이를 위해 개선된 허프만P 함수가 있음. - 일정 길이보다 짧은 선분은 제거함.
+> * 또한, 일정 간격 이상이 떨어진 직선들에 관해서 분리하고, 나머지는 같은 직선이라 판단함.
+
+![image](https://user-images.githubusercontent.com/55529455/160548789-954c3e3d-f40e-4a7f-8da2-d1d045b91efb.png)
+![image](https://user-images.githubusercontent.com/55529455/160548891-b5367844-00d0-46b8-a2ed-0d9901a3d7f0.png)
+![image](https://user-images.githubusercontent.com/55529455/160548934-51aed41a-be34-428e-a0d1-f6781a9f9e48.png)
 
 
 
