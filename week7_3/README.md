@@ -144,7 +144,12 @@
 > * CTE 값을 인자로 넘겨 PID 계산을 수행함.
 
 ![image](https://user-images.githubusercontent.com/55529455/160775022-608baeb9-3a21-4181-914d-07d4519446df.png)
-
+![image](https://user-images.githubusercontent.com/55529455/160775268-5cbd5f72-f8c6-437b-b09e-30fb0a545f69.png)
+![image](https://user-images.githubusercontent.com/55529455/160775527-0edf958a-455a-4a74-966a-d3b2cbac42de.png)
+> * ex) P = 0.45, I = 0.0007, D = 0.25
+> * 하지만, 차량의 속도를 높이면 PID를 다시 만져야함.
+> * 속도를 높이는 경우, 정착시간까지 반응이 일어나지 않기 때문에 I 제어기가 필요하지 않음.
+> * 따라서 PD 제어기를 사용함 (P = 0.55, D = 0.4)
 
 
 
