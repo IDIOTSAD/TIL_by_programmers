@@ -56,6 +56,57 @@ print(x[0:2][1:3]) => 0행~1행 1열 ~ 2열의 값을 가지고 옴. -> [2,3][2,
 ![image](https://user-images.githubusercontent.com/55529455/162666047-81a84462-72a5-4630-a7ae-ac26f118790c.png)
 ![image](https://user-images.githubusercontent.com/55529455/162666092-c92eca33-1f83-4a69-93cb-c763b7d5def5.png)
 
+> * 영벡터 (영행렬)
+> * 원소가 모두 0인 벡터
+> * np.zeros(dim)을 통해 생성
+
+> * 일벡터 (영행렬)
+> * 원소가 모두 1인 벡터
+> * np.ones(dim)을 통해 생성
+
+> * 대각행렬
+> * Main diagonal을 제외한 성분이 0인 벡터 => (0,0), (1,1) ... (n,n)의 행렬을 제외한 성분이 0
+> * np.diag(dim)을 통해 생성
+
+> * 항등행렬
+> * Main diagonal을 제외한 성분이 0인 벡터 => (0,0), (1,1) ... (n,n)의 행렬부분이 1이고 나머지 0
+> * np.eye(dim)을 통해 생성
+
+> * 행렬곱
+> * 행렬간의 곱연산
+> * np.dot(dim) 또는 @를 사용
+
+![image](https://user-images.githubusercontent.com/55529455/162685686-b7e6afc8-3341-4cde-a06f-8be412622387.png)
+
+> * 트레이스
+> * Main diagonal의 합 => (0,0), (1,1) ... (n,n)의 행렬부분의 합
+> * np.trace(dim)을 통해 생성
+
+> * 행렬식
+> * 행렬을 대표하는 값들 중 하나 = 선형 변환, ad - bc의 값.
+> * np.linalg.det(dim)을 통해 생성
+> * 3차원의 경우는 다음과 같음.
+
+![image](https://user-images.githubusercontent.com/55529455/162685994-5dccae07-2c9c-4930-82a5-a9d80ac3c516.png)
+
+> * 역행렬
+> * 행렬 A에 대해 AB = BA = I를 만족하는 행렬 B = A^-1
+> * np.linalg.inv(dim)을 통해 생성
+
+![image](https://user-images.githubusercontent.com/55529455/162686121-dd3e5a01-d12b-41ba-9c54-33503e9cc81c.png)
+![image](https://user-images.githubusercontent.com/55529455/162686162-d7597189-3100-4b6e-b97c-907377d402c7.png)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
