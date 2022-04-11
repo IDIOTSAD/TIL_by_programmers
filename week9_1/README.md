@@ -143,7 +143,7 @@ y = np.array([1,4,9,16,25]) #f(x)
 plt.plot(x,y)
 plt.show()
 ```
-> * # np.arange(a,b,c) 시작점 a, 끝점 b, c (python은 int로 고정되어있음, numpy는 아님.)
+> * np.arange(a,b,c) 시작점 a, 끝점 b, c (python은 int로 고정되어있음, numpy는 아님.)
 ```
 x = np.arange(-10,10,0.01) 
 plt.plot(x, x**2) # y는 x의 제곱
