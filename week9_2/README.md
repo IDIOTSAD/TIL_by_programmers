@@ -130,22 +130,48 @@
 ![image](https://user-images.githubusercontent.com/55529455/162939427-e72ee21a-73b7-46a4-8341-13fdb89c878d.png)
 ![image](https://user-images.githubusercontent.com/55529455/162939581-8b0b24f6-7abb-4dfb-acec-d6899e53db2d.png)
 
+> * 데이터의 적은양 = 차원의 저주와 관련
+> * MNIST = 28 * 28 단순히 흑백으로 구성된다면 서로 다른 총 샘플 수는 2^784 가지지만, MNIST는 6만가지의 샘플
 
+> * 적은 양의 데이터베이스로 어떻게 높은 성능을 달성하는가?
+> * 방대한 공간에서 실체 데이터가 발생하는 곳은 매우 작은 부분 공간임
+> * 데이터 희소 특성 가정
+> * 매니폴드 (마나+끼다) 가정
+> * 고차원의 데이터는 고나련된 낮은 차원의 매니폴드에 가깝게 집중되어 있음.
+> * 일정한 규칙에 따라 매끄럽게 변화.
 
+![image](https://user-images.githubusercontent.com/55529455/162940790-50be053f-472d-40ae-8831-96309cc114a5.png)
 
+> * 4차원 이상의 초공간은 한꺼번에 가시화 불가능
+> * 여러가지 가시화 기법 - 2개씩 조합하여 여러개의 그래프 그림
+> * 고차원 공간을 저차원으로 변환하는 기법들
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+![image](https://user-images.githubusercontent.com/55529455/162941453-035644c7-523f-402d-8822-b71fca2ea41c.png)
+![image](https://user-images.githubusercontent.com/55529455/162941609-f88ef29a-108a-4601-b182-0020108f5517.png)
+![image](https://user-images.githubusercontent.com/55529455/162941677-db3503ba-61ec-46bc-bd02-bcafeca4c533.png)
+![image](https://user-images.githubusercontent.com/55529455/162941712-9971547c-066e-49f1-8d30-e72046f6552e.png)
+![image](https://user-images.githubusercontent.com/55529455/162941745-f8b6ab71-12e7-49ce-9f72-55446dde1b56.png)
+![image](https://user-images.githubusercontent.com/55529455/162941782-efd3a35b-0c8a-41da-b848-9b5f1fe48e78.png)
+![image](https://user-images.githubusercontent.com/55529455/162941817-5b253bbb-a842-41ca-bbe2-b640d686abf2.png)
+![image](https://user-images.githubusercontent.com/55529455/162941935-b978bed3-d752-4547-b215-c4d0a134d5bc.png)
+![image](https://user-images.githubusercontent.com/55529455/162942942-36ad75bd-e7b3-49ee-948a-a0bda67ab5c8.png)
+![image](https://user-images.githubusercontent.com/55529455/162942978-d3744779-2583-4b3d-b010-01b9e7025a04.png)
+![image](https://user-images.githubusercontent.com/55529455/162942993-6b21f90e-24d8-40c9-a37f-8509687cabe0.png)
+![image](https://user-images.githubusercontent.com/55529455/162943017-1f729847-27aa-4ae9-a3e5-0178511d03d4.png)
+![image](https://user-images.githubusercontent.com/55529455/162943045-df7a2116-1d2b-4a4a-86c8-4ef599611d5d.png)
+![image](https://user-images.githubusercontent.com/55529455/162943074-091a3f82-3442-4f1b-9cb4-98d4930b6b9b.png)
+![image](https://user-images.githubusercontent.com/55529455/162943101-9ac42b4c-7d0f-424d-ae89-f17b12677382.png)
+![image](https://user-images.githubusercontent.com/55529455/162943126-cbc118f5-7069-4a67-acd3-332630a7686b.png)
+![image](https://user-images.githubusercontent.com/55529455/162943149-529dd302-2b2c-4e1c-8a4f-b7696ac502a6.png)
+![image](https://user-images.githubusercontent.com/55529455/162943174-2c366a2e-baa5-4e16-a6bd-ac1bfd544da0.png)
+![image](https://user-images.githubusercontent.com/55529455/162943202-ff089191-1222-45af-9685-6d437c5ae558.png)
+![image](https://user-images.githubusercontent.com/55529455/162943223-9ec5888c-c898-4869-a177-359f40c0a4f8.png)
+![image](https://user-images.githubusercontent.com/55529455/162943244-df18ad0b-9f9b-4d23-b402-2010916590eb.png)
+![image](https://user-images.githubusercontent.com/55529455/162943271-3d181a96-6017-42ac-bd86-2ceadb442ec8.png)
+![image](https://user-images.githubusercontent.com/55529455/162943294-1d4dae85-8c16-497e-97a7-0737b599b232.png)
+![image](https://user-images.githubusercontent.com/55529455/162943345-1d397d60-0c89-49cd-bd00-499d3c114092.png)
+![image](https://user-images.githubusercontent.com/55529455/162943434-507fe883-b71d-42c6-a3d6-47131d2ac7ae.png)
+![image](https://user-images.githubusercontent.com/55529455/162943466-f5680c24-52ce-41d3-bf75-f2f1cd14f2d8.png)
+![image](https://user-images.githubusercontent.com/55529455/162943508-6ee6f439-48b2-4fca-8f21-e7af9041ac0a.png)
+![image](https://user-images.githubusercontent.com/55529455/162943538-e0d478ef-cf09-4a80-a601-c599ae6ade75.png)
 
