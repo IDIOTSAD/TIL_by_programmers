@@ -77,6 +77,69 @@
 
 > * 관찰된 데이터들을 어떻게 설명할 것인가?
 > * 가설 = 눈대중으로 데이터 양상이 직선형태를 보임. -> 모델을 직선으로 선택 가정.
+> * 2개의 매개변수 w와 b => y = wx + b -> 여기서 w와 b를 찾는 것 (규칙을 찾는것)
+
+> * 기계학습의 훈련
+> * 주어진 문제인 예측을 가장 정확하게 할 수 있는 최적의 매개변수를 찾는 작업
+> * 처음은 임의의 매개변수 값에서 시작하지만, 개선하여 정량적인 최적 성능에 도달
+> * 잘 모르지만 임의의 점을 그었다. = 우리가 평가 할 때, 4개의 점을 f1이라는 것으로 설정하고 싶음
+> * f1에서 나오는 예측값은 그래프에서 확인 할 수 있음. = 실제 관측된 값과 근접하지 않음.
+> * 갱신하거나 점진적으로 훈련을 통해서 바꾸어 f2, f3 로 바뀌면서 점차 찾게 됨.
+> * 실제 훈련 집합이 얼마나 차이나는지에 대한 오차 = 에러라고 함. (손실함수)
+
+![image](https://user-images.githubusercontent.com/55529455/162922641-0c0922d8-bc2a-4ca1-bff5-9d1bf7280264.png)
+
+> * 훈련을 마치면 추론을 수행
+> * 새로운 특징에 대응하는 목표치의 예측에 사용
+> * 기계학습의 궁극적 목표
+> * 훈련집합에 없는 새로운 데이터에 대한 오류를 최소화 (새로운 데이터 = 테스트 집합)
+> * 테스트 집합에 대한 높은 성능을 일반화 능력이라 부름 (모의고사만 잘 본 학생 vs 모의고사와 수능을 잘 본 학생)
+
+> * 기계학습의 필수요소
+> * 학습할 수 있는 데이터가 있어야함.
+> * 데이터 규칙 존재
+> * 수학적으로 설명 불가능 = 데이터가 있을 때, 노이즈 때문에 실제 값들이 바뀔 수 있음
+
+![image](https://user-images.githubusercontent.com/55529455/162925023-f64708dd-47c5-4910-9f01-e1dae21e4f42.png)
+
+> * 특징공간의 이해
+> * 1차원과 2차원 특징 공간
+
+![image](https://user-images.githubusercontent.com/55529455/162935874-71dc09df-b54f-456e-b29e-8735fd8e91fa.png)
+![image](https://user-images.githubusercontent.com/55529455/162935952-efe884b4-7d5d-4f33-8906-fff7e0bbaff3.png)
+![image](https://user-images.githubusercontent.com/55529455/162936001-8ef951b2-a69a-40a6-a468-7753b211a15f.png)
+![image](https://user-images.githubusercontent.com/55529455/162936939-5d087128-5431-4810-b1d9-d5260c26218d.png)
+![image](https://user-images.githubusercontent.com/55529455/162937140-e60a3f32-a8cc-42ca-aeaa-4f8893243e5b.png)
+![image](https://user-images.githubusercontent.com/55529455/162937255-bc2ed69b-ac92-435c-881e-d6f28ae4ff10.png)
+
+> * Ada Lovelance 여사의 통찰력 = 해석기관은 숫자 이외의 것도 처리할 수 있다.
+> * 200년이 지난 지금, 인간수준의 사진 인식 능력, 알파고는 바둑으로 사람의 능력을 압도, 구글사의 듀플렉스는 인간과 대화
+
+> * 인공신경망의 역사
+> * 1940 - 1960 = 인공두뇌학
+> * 1980 - 1990 = 결합설
+> * 2006 - 현재 = 심층학습
+
+> * 기계학습 알고리즘과 응용의 다양화
+> * 표현 학습이 중요해짐
+> * 심층 학습이 기계학습의 주류
+> * 심층학습은 현대 인공지능 실현에 핵심 기술
+
+![image](https://user-images.githubusercontent.com/55529455/162939173-71ab9e3f-73a4-4ebb-878d-37fb6b5797e3.png)
+![image](https://user-images.githubusercontent.com/55529455/162939366-6e0cc7d8-ff70-4fc9-8b85-24198625cfb8.png)
+![image](https://user-images.githubusercontent.com/55529455/162939427-e72ee21a-73b7-46a4-8341-13fdb89c878d.png)
+![image](https://user-images.githubusercontent.com/55529455/162939581-8b0b24f6-7abb-4dfb-acec-d6899e53db2d.png)
+
+
+
+
+
+
+
+
+
+
+
 
 
 
