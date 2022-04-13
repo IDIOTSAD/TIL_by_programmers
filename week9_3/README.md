@@ -110,6 +110,62 @@
 ![image](https://user-images.githubusercontent.com/55529455/163129752-db0d481e-ce88-4029-8774-588e92c468bf.png)
 ![image](https://user-images.githubusercontent.com/55529455/163129790-2def0d42-970a-49df-9625-646437249ccf.png)
 
+> 정보이론과 확률통계는 많은 교차점을 가짐
+> 확률 통계는 기계학습의 기초적인 근간 제공 (해당 확률 분포 추정, 확률 분포 간의 유사성 정량화)
+> 정보이론 관점에서도 기계학습을 접근 가능 - 불확실성을 정량화 하여 정보이론 방법을 기계학습에 활용한 예
+> 예시 : (엔트로피, 교차 엔트로피, KL발산 (상대 엔트로피)
+
+> 정보이론 : 사건이 지닌 정보를 정량화 할 수 있는가? = 아침에 해가 뜬다와 오늘 아침에 일식이 있었다라는 정보중 어떤게 정보가 많은가?
+> 정보이론의 원리 = 확률이 작을수록 많은 정보를 지님. 자주 발생하는 사건보단 잘 일어나지 않는 사건의 정보량이 더 많음.
+
+> 자기정보 = 사건의 정보량 (단위 : 2아래인 경우는 비트, 로그의 밑이 자연상수이면 nat 나츠)
+> 엔트로피 = 확률변수 x의 불확실성을 나타태는 엔트로피, 모든 사건 정보량의 기대 값으로 표현
+
+![image](https://user-images.githubusercontent.com/55529455/163143592-3c1f1c02-4656-4c0e-97e4-e481ccff5bd1.png)
+![image](https://user-images.githubusercontent.com/55529455/163143637-6205afa3-1c70-455b-989b-4eacf2991e7d.png)
+![image](https://user-images.githubusercontent.com/55529455/163143680-94cf7c58-a3df-48ba-8ddf-75d673838c23.png)
+![image](https://user-images.githubusercontent.com/55529455/163143734-7595d217-4e01-496e-bd85-5d6362975535.png)
+> 내가 원하는 데이터 확률과 모델에서 나오는 데이터 확률을 둘 다 동일해지도록 맞춰야함.
+> 실제 확률분포와 내가 생각하는 확률분포의 오차를 낮춰야한다.
+> 교차 엔트로피를 낮춘다 = K 오차를 낮춘다는 것.
+
+![image](https://user-images.githubusercontent.com/55529455/163164490-1b0d9f07-83e2-46b8-8e96-4d0d1cd7eafd.png)
+> 순수 수학 최적화와 기계학습 최적화의 차이
+> 기계 학습의 최적화는 단지 훈련집합이 주어지고, 훈련집합에 따라 정해지는 목적함수의 최저점을 만드는 모델의 매개변수를 찾아야함.
+> 주로 SGD(확률론적 경사 하강법) 사용함. - 손실함수 미분하는 과정 필요 -> 오류 역전파 알고리즘
+
+![image](https://user-images.githubusercontent.com/55529455/163165327-ad05c4fc-6bf2-4c03-8e7e-6956be706f14.png)
+![image](https://user-images.githubusercontent.com/55529455/163165355-90f61d25-a156-4e16-adea-4071d9e6c298.png)
+![image](https://user-images.githubusercontent.com/55529455/163165390-f6271517-ec62-45e0-98d1-21e493c8d26e.png)
+![image](https://user-images.githubusercontent.com/55529455/163165417-e039a022-7b6a-4f28-b48a-1f38d9d9a5f6.png)
+
+> 독립변수와 종속변수의 구분
+> 식에서 일반적으로는 x는 독립변수, y는 종속변수 -> y = wx + b
+> 기계학습에서 예측단계를 위한 해석은 무의미
+
+> 최적화는 예측단계가 아니라 학습 단계에 필요
+
+![image](https://user-images.githubusercontent.com/55529455/163166187-842d7a75-dcb5-42e8-a0cb-641e96a7588b.png)
+![image](https://user-images.githubusercontent.com/55529455/163166222-9fa205bc-6a43-44ce-a7d4-d05b37a99c5f.png)
+![image](https://user-images.githubusercontent.com/55529455/163166252-b716ebe6-5c73-4130-b09f-c380fc6ebaf9.png)
+![image](https://user-images.githubusercontent.com/55529455/163166295-757d3d08-73da-4bb8-975a-2eba11ed9d66.png)
+![image](https://user-images.githubusercontent.com/55529455/163166321-a141311e-ffcc-4dab-ae59-a8dcdcf2724c.png)
+![image](https://user-images.githubusercontent.com/55529455/163166362-f3329329-b2fc-4df9-a93b-d44f9c5d5054.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
