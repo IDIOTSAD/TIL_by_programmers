@@ -132,6 +132,171 @@
 > container의 가장 큰 장점은 성능과 배포
 > VM, 특히, full virtualization은 성능 문제가 심각함.
 
+> docker CLI
+> doclker daemon과 통신하여 기능을 수행
+> binary : docker - docker group을 supplementary group에 포함시켜야 사용 가능.
+
+![image](https://user-images.githubusercontent.com/55529455/163800056-a48b8df9-50c6-4ee8-a9ad-84a377a72625.png)
+
+> 그룹 추가 후에는 session을 재생성해야 groups 정보를 다시 읽는다. - 재로그인
+> ubuntu 배포판으로는 재로그인으로 groups 반영 안됨. gdm을 재실행해야하므로 다음과 같이 실행
+> 1. X window에서 로그아웃
+> 2. ctrl + alt + f4를 눌러서 tty4이동 후, console에 root접속
+> 3. systemctl restart gdm
+> 4. X window login
+
+> docker ps는 기본적오르 작동중인 docker process를 출력
+> -a 옵션을 추가해서 종료된 process 상태로 확인이 가능함.
+> docker id, image, command, created, status(0 - success, NULL - fail), portname으로 구성됨
+> docker run은 새로운 container를 실행함. NAME을 설정하지 않으면 임의로 생성함 (이름 추가시, --name 이름)
+> doecker rm은 container를 제거함. docker rm (container name)
+
+> 10개의 hello-world(count) container 생성 - 쉘 프로그래밍 사용
+> for ii in {1..10}; do docker run --name hello-world${ii} hello-world; done
+
+> docker filter 기능이 있음.
+> 사용하고자 할 때는 -f 이용
+> -f = 조건에 있으면 모두 찾음
+> -af = glob pattern을 지원함.
+> 조건 = id(컨테이너 아이디), name(컨테이너 이름), label, status(컨테이너 상태), exited, ancestor(이미지에 따른 검사)
+
+> format 옵션을 사용하면 원하는 열만 뽑아 볼 수 있음.
+> 사용법 = --format "조건"
+> 조건(앞에 대문자) = .id, .image, .command, .createAt, .ports, .state, .status
+
+> docker rm = remove container
+> -f와 format을 이용하여 여러개의 컨테이너 삭제가능
+> 예) docker ps -af 'name=hello' --format "{{.Names}}" | xargs docker rm
+
+> docker rmi = remove image
+> container가 존재하면 image 삭제 실패함.
+> force option으로 가능하지만, container 삭제 후, image 삭제 권장
+
+> docker image ls
+> REPOSITORY = docker image 저장소 이름
+> TAG = 태그 이름 (버전)
+
+> docker image pull = Pull an image or a repository from a registry
+> run 목적이 아니라, 나중에 run 하거나, build, save 목적인 경우 pull 이용
+> docker image pull == docker pull
+
+> docker image inspect nginx = Return low-level imformation on docker objects
+> docker image inspect == docker inspect
+> 버전이라던지 여러가지 정보 확인 가능, format을 이용하여 특정 정보만 볼 수 있음.
+
+> docker image save = Save one or more image to a tar archive (streamed to STDOUT by default)
+> stdout으로 출력되므로 redirection을 사용하여 저장, 옵션을 -o대신 사용 할 수 있음.
+> Docker image가 tar 파일로 저장됨. 여러 서버에 복사하거나 종종 사용하는 이미지는 network에 절약하거나 여러 문제를 일으키지 않도록 백업해서 사용
+> docker image svae == docker save
+
+> docker image load = Load an image from a tar archive or STDIN
+> docker image rm == docker rmi
+> save로 저장한 이미지 tar파일을 load할 수 있음.
+> docker image load == docker load
+
+> docker 모든 컨테이너 삭제
+> docker ps -a --format '{{.ID}}' | xargs docker rm
+
+> docker는 동일한 NAME을 가진 container를 만들 수 없음.
+> ubuntu_top -> ubuntu_top2로 변경 시 잘 되지만, 두개의 컨테이너는 동일한 컨테이너가 아님.
+> run - 새롭게 컨테이너를 실행하는 명령
+> exec - 기존에 있는 컨테이너를 실행하는 명령
+
+> docker binding
+> 컨테이너의 자원을 외부와 연결
+> 일반적으로 I/O와 storage관련을 연결함
+> network
+> port network - host os, container port를 바인딩
+> network - docker network 사용
+> directory, file, block-device
+> mount binding - host os의 directory를 바인딩
+> volume - docker volume 저장소 사용
+> device - host os의 device, GPU를 바인딩
+> environment
+> shell environment variables를 지정
+
+> binding : net
+> nginx web server를 실행하기 위해 nginx container가 사용할 port를 Config에서 확인
+> docker inspect nginx
+
+> docker에서 stdin, stdout, stderr 안쓰는 이유 - daemon 기반, signal통신 때문에 - sigin, sigout등 때문에
+
+> 1번 터미널 nginx container
+> docker run --rm -p 8080:80/tcp --name nginx_8080 nginx (--rm은 자동적으로 종료시 삭제)
+> 2번 터미널 8080port listen확인
+> ss -nlt 'sport= :8080' , curl 127.0.0.1:8080
+
+> 1번 터미널 stopping (ctrl - c) => rm 명령어로 자동 삭제 됨.
+> forground는 창을 닫으면 안됨. background로 하는 방법 = -d 옵션
+> log 남기고 싶으면 docker logs, following mode 사용 하고 싶으면, -f 옵션 사용
+
+> docker run -it 를 하게 되면 터미널에 도커가 실행되어 도커 터미널이 됨.
+> it (interactive mode & terminal)
+> escape key sequence : Ctirl P + Ctrl Q (-it 안하면 실행이 안됨.)
+> -itd 하면 detach 모드가 됨. 따라서 docker attach를 하게 되면 다시 터미널에 들어갈 수 있음.
+> tmux 찾기 - terminal multiplexer -> 하나의 터미널 창에 여러개 띄어서 쓰게 만들어주는 프로그램
+
+> biding : mount
+
+![image](https://user-images.githubusercontent.com/55529455/163805773-ade42991-ef98-418c-86f7-bc7d878aef2e.png)
+![image](https://user-images.githubusercontent.com/55529455/163806004-0221ac19-be0d-4439-b0cd-b64d6c80ed2a.png)
+![image](https://user-images.githubusercontent.com/55529455/163806059-e5c32807-fb03-4eb5-9464-d6654d97dc87.png)
+![image](https://user-images.githubusercontent.com/55529455/163806157-a5f10273-96e1-441c-8d39-bd24f078fc53.png)
+![image](https://user-images.githubusercontent.com/55529455/163806199-00ccd4f0-bffe-4d5f-ac70-315ca9918ad0.png)
+![image](https://user-images.githubusercontent.com/55529455/163806250-790acae6-e0d2-41f8-b131-32be866dfeb3.png)
+
+> env
+> environment variables
+> --env KEY=value
+> --env-file env_file
+> -e로도 사용 가능함.
+
+> docker volume, network
+> docker volume - docker volme management - logical volume과 유사
+> docker network - network ip addr, subnet mask 등 설절
+
+> docker stop
+> detached mode로 실행중, 외부에서 docker stop으로 정지
+> -it를 사용하지 않는 시스템은 signam, docker stop으로 정지
+
+> docker start
+> docker run --rm을 쓰지 않는 경우 exited시 container로 남음.
+> stop후, 재시작할 때는 start로 가능
+
+> docker run의 선택적 옵션
+> detach mode : -d
+> stdio의 사용 : -it
+> 종료시 제거 : --rm
+> binding (port) : -p host_port:container_port
+> binding (file) : --mount .... or -v ....
+> binding (env.) : -e KEY=value or --env-file ...
+
+> docker-compose
+> define and run multi-container applications with docker
+> -f 파일명
+> 기본 설정은 config는 yaml, defalut filename - docker-compose.yml
+> builds or rebuilds, creates, starts
+
+> sudo apt -y install docker-compose
+> mkdir ~/docker-compose
+> cd ~/docker-compose
+> vi docker-compose.yml
+> docker-compse.yml 파일에 다음 장의 내용을 넣는다
+> yml 파일 형식은 indentation, space에 주의한다. - official site - https://yaml.org
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
