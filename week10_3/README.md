@@ -82,6 +82,66 @@
 > 필수적인 요소 중 하나.
 
 
+# object detection
+
+> 이미지를 보고 분류하는 것 - Classification
+> 객체가 하나의 object가 있을 때, 위치까지 알 수 있도록 정보 제공 - Object Localization
+> 객체가 여러개 있을 때, 위치를 알려주는 정보 제공 - Object Detection
+
+> 객체의 결과 값이 확률 분포로 나오게 됨. - Classification의 기본 결과 class_socre\[예측된 결과값, 각각의 object 클래스]
+> Classification + \[x, y, w, h] 4개의 포인트 값이 추가가 됨. - Localization (바운딩 박스가 추가 됨.) 위의 배열에서 + 4개가 됨.
+
+> 예전에 제안된 object detection
+> 슬라이딩 윈도우를 써서 다중 객체 인식이 가능할 것이다. - 이미지 한장을 보는데도 많은 연산이 필요한데, 여러개를 찾으려면 inference하는데 자원이 많이 듦.
+> 오브젝트가 큰지 작은지 알 수 없고, 가변적인 크기를 할 수 없었음.
+
+> 요즘 많이 쓰이는 방식
+> classification + regressor가 추가 됨. regressor = bounding box와 같은 정보를 담음
+
+> Classification vs Object detection
+> 마지막 레이어 쉐이프가 다름.
+> Object detection은 위치 개념이 있기 때문에, 2D feaature로 표현을 해야함.
+> Classification은 위치 개념이 없기 때문에 1D feature로도 표현이 가능.
+> 일반적인 Classification = \[1, 1, class_num]
+> 일반적인 object detection = \[H, W, class_num + box_offset + confidence] (1 스테이지)
+
+> object detecion의 아키텍쳐
+> stage의 개념 = 얼마나 forward를 하는지
+> two-stage detection = 한번 forward하고, 예측된 결과 값을 또 forward하여 최종적으로 결과를 출력하는 것. (Faster-RCNN) - 정확하지만, one-stage보다 느림.
+> one-stage detection = 한번에 forward해서 나온 예측값을 바로 결과로 내는 것. (SSD, YOLO) - 속도는 빠르지만, tow-stage보다 정교하지 않음.
+
+> one stage object detector architecture
+> backbone - lenet5, vgg 등 classification 모델 (Feature extractor)
+> neck - backbone에서 뽑아낸 이미지(낮은 것 부터 큰 것까지)에서 단계적으로 각각 다른 해상도 값을 가지는 feature map을 병합하는 것. (feature pyramid)
+> dense prediction - 각 feature map에서 학습되어 도출되는 object의 예측값에 바운딩 박스를 채워놓음.
+
+> feature들이 backbone을 통해 추상화가 됨. 레이어가 깊어질수록 추상화가 심해짐.
+
+> neck부분에서 feature들이 섞이고 더해지게 되는데, 작은 해상도를 가지는 feature를 업스케일링을 통해 해상도를 갖게 한다. (H, W가 동일해야함.)
+> 만든 feature가 채널이 다른 경우 뒷단 채널에 붙이는 것을 concat이라 함. \[2C, H, W]가 되는 것임.
+> 채널수까지 똑같은 경우, 더해서 1개의 새로운 feature를 만드는 것을 add라고 한다. \[C, H, W]가 되는 것임.
+
+> dense Prediction의 경우, 클래스에 대한 정보를 담는 개수, 확률값을 담은 값, 바운딩 박스 값을 가지는 결과 값을 header라고 함.
+
+> two stage object detector architecture
+> 1번째 포워드에서는 피쳐맵이 나올 때, 오브젝트가 맞다고 예측하는 부분에 proposal 하고, 위치에 대한 학습이 진행됨.
+> 그리고, path에 대한 정보를 입력을 넣어서 다시 오브젝트 위치에 대한 분류와 바운딩 박스를 함.
+> 1번째 포워드는 후보들을 뽑는 과정이 되고, 2번째 포워드에서는 후보 영역중 inference를 통해 실제 object를 확인하는 과정.
+
+> one stage까지 진행하는 것은 동일. 이후에 1개가 추가가 됨. sparse prediction.
+> 후보 영역들을 다시 한번 분류, 바운딩 박스 작업 수행.
+
+> grid - 피쳐 맵의 픽셀 수를 grid라고 함.
+> 격자로 object를 찾아내는 것.
+
+
+
+
+
+
+
+
+
 
 
 
