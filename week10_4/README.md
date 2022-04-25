@@ -147,7 +147,11 @@
 > 네트워크 예측값은 5개의 바운딩 박스를 cell로 계산함. - tx, ty, tw, th, to로 구성됨 -> 그것을 계산함. 5%의 앵커박스 정확도가 올라감.
 > 13 x 13으로 하다보니 좀 더 정확하게 객체를 찾을 수 있게 됨.
 
+![image](https://user-images.githubusercontent.com/55529455/165100942-8598e5b9-f936-4650-aded-0ad51ee53a91.png)
+> 실제로, resolution의 값을 유동적으로 할 수 있기 때문에, 해상도가 낮으면 fps가 증가, 높으면 mAP가 증가하므로 적절한 값을 찾아서 쓰면 됨.
 
+> Darknet-19 backbone
+> VGG 모델과 유사하지만, 3x3 필터를 사용함. batch norm도 사용, 잘 수렴할 수 있게 사용함. 19개의 컨벌루션 레이어와 5개의 maxpooling 레이어 사용.
 
 
 
