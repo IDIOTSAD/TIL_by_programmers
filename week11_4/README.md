@@ -124,6 +124,9 @@
 
 * 컴퓨터 비전에서의 왜곡은 이미지의 기하학적 정보를 해석하는데 방해요소기 때문에, 왜곡을 보정하여 사용함.
 
+![image](https://user-images.githubusercontent.com/55529455/166901107-e35dad5c-dadc-4f3f-bdb0-1489eddab5b1.png)
+![image](https://user-images.githubusercontent.com/55529455/166901619-29e2633e-96e1-4856-b084-f179fe7ba5a2.png)
+![image](https://user-images.githubusercontent.com/55529455/166902087-d02af0f0-6062-423a-bc21-a681b9991ec1.png)
 
 
 
