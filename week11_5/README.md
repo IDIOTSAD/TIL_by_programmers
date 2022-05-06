@@ -119,7 +119,7 @@
 
 ![image](https://user-images.githubusercontent.com/55529455/167114479-009281b5-1a6b-497f-aba4-6bfbb3bbaadc.png)
 
-
+* 결론 - 가장 중요한 것은 objpoints와 imgpoint의 매칭쌍을 만드는게 가장 중요함.
 
 
 
