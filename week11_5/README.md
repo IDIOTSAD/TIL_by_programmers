@@ -91,8 +91,33 @@
 * 각 센서의 장착 위치가 다르고, 사용하는 좌표계가 다르기 때문에 이를 통합하는 과정이 필요하다 (Sensor Fusion)
 * 따라서 카메라의 장착 위치와 자세를 파악해야한다. - 차량 좌표계에서 카메라 좌표계로 가면 Ext, 반대로 하면 Ext 역수
 
+![image](https://user-images.githubusercontent.com/55529455/167109309-b1bf758f-adab-469d-940b-9a706a841405.png)
+* rvec, tvec 값을 이용하여 objectPoint를 투영하면 해당 평면의 3차원 물체가 투영됨.
+* 그러나, 카메라가 존재하는 공간은 3차원이기 때문에, Extrinsic Calibration의 origin을 보드로 설정하기 어렵다.
+* objPoint의 origin을 어느 한 점으로 설정하고, 카메라 캘리브레이션을 수행하면 해당 origin에 대한 rvec, tvec을 얻을 수 있음.
+* 아래 사진에서 Tire Clamps와 Distance meter을 이용하면, 후륜 축으로부터의 거리를 파악 할 수 있다.
+* 두 개의 거리 측정기를 사용하여 Calibration Pattern과 차량의 수평을 조정 할 수 있음.
 
+![image](https://user-images.githubusercontent.com/55529455/167110879-6e52cf41-971f-4320-a9d5-23ab379b9fbd.png)
+![image](https://user-images.githubusercontent.com/55529455/167111438-bdb8e2fe-adcb-44fe-a9c5-048a93cd8f6f.png)
+![image](https://user-images.githubusercontent.com/55529455/167111516-7a630e56-a0bf-4c08-99be-69dd75eb58fc.png)
 
+* Mobileye와 같이 높이와 거리를 통해서도 응용이 가능함.
+* 다수의 Calibration Pattern을 사용하는 방법도 존재함.
+* Calibration Pattern 사이의 rvec, tvec을 계산하면(reconstruction), 카메라에서 촬영한 다수의 Pattern들의 imagepoints로 카메라의 자세를 파악할 수 있다.
+* 대표적인 Extrinsic Calibration - Camera-LiDAR Calibration
+
+![image](https://user-images.githubusercontent.com/55529455/167113947-c7536e7f-9a51-4d75-81c8-912894aefd56.png)
+![image](https://user-images.githubusercontent.com/55529455/167113988-31e2b73f-1ca2-4e86-a047-58c65cd3ca68.png)
+
+* 이렇게 얻어낸 objpoints와 imgpoint로 PnP 문제를 풀면, LiDAR -> Camera의 rvec, tvec을 계산 할 수 있음.
+* LiDAR 데이터와 함께 Projection 하면 Image 위에 LiDAR 데이터를 올릴 수 있음.
+* 단, 여기서 얻어낸 rvec, tvec으로 이미지 데이터로 3차원 공간 정보를 복원할 수 없음. (무수히 많은 해가 존재)
+
+![image](https://user-images.githubusercontent.com/55529455/167114362-66a18416-0151-4986-a59f-19b25d46e478.png)
+* x가 음수인 경우에는 사용 안하도록 필터링을 수행 해야함.
+
+![image](https://user-images.githubusercontent.com/55529455/167114479-009281b5-1a6b-497f-aba4-6bfbb3bbaadc.png)
 
 
 
