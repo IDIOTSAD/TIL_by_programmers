@@ -11,12 +11,10 @@
 * 깊이 정보가 손실되기 때문에 거리를 직접 측정하거나, 기하학적 방법으로 복원했어야 함.
 * 데이터가 쌓이면서, 2D -> 3D로 복원된 이미지를 추론할 수 있는 딥러닝 네트워크가 발달함.
 
-
 * 자율주행에서 사용되는 Perception
 * Lane Detection, Object Detection, Segmentation - 이전에 배웠던 내용
 * Object tracking, motion prediction - 객체의 움직임을 예측하는 것.
 * 3D object detection, pose estimation - 객체를 2D 바운딩 박스를 넘어 방향성까지 파악하는 것. 객체의 거리도 파악함. (3D를 완벽히 이해해야함)
-
 
 * Visual Slam은 여러장의 사진을 이용하여 3D의 공간을 유추하고, 나의 이동 경로를 유추하는 기술 (공간, 위치, 상태를 이해)
 * 자율주행, 자율비행, 메타버스에서 활발히 사용됨.
@@ -24,7 +22,6 @@
 * 자율비행 - 비행 중 실시간으로 이동이 가능한 위치 파악.
 * 메타버스 - 3D 공간을 유추하여 가상 공간의 물체를 현실세계에 소환.
 * 딥러닝과 융합할 가능성이 높은 기술임.
-
 
 * Visual Slam은 딥러닝으로 풀 수 없는 문제를 풀 수 있게 됨.
 * 1. 현재 보이는 공간을 넘어서 지금까지 내가 주행했던 3D 공간에 대한 기억을 가지게 됨.
@@ -164,20 +161,138 @@
 * Optical system - 차량용 IMU
 * MEMS - 스마트폰 및 소형 디바이스 IMU
 * 장점 - Consumer grade 제품은 저렴한 편 (자동차는 동일 성능에 저렴하지 않음), 높은 sensitivity, 높은 fps(100hz ~ 4000hz)
-* 단점 - 엄청나게 빠른 drift 누적 - 보정을 위해 Camera, LiDAR, GNSS와 함께 사용, bias 값이 점점 바뀌는 모습을 보임 (기준 값과 노이즈가 함께 날라감)
+* 단점 - 엄청나게 빠른 drift 누적 - 보정을 위해 Camera, LiDAR, GNSS와 함께 사용
 * 비전과 융합한 VIO,VINS 라이다와 결합한 LIO, LINS가 유행하고 있음 - IMU를 통해 얻은 프라이오 정보를 다른 센서와 결합해서 좀 더 빠르게 얻기 위함.
-* 
 
+* Exteroceptive sensors의 종류 - GNSS, LiDAR, Camera, Ultrasound, RADAR, Microphone
 
+* GNSS - Global navigation satellite system (GPS는 미국의 GNSS 시스템임.)
+* 비콘 기반의 위치 추정 센서 (위성)
+* 다수의 비콘에 대한 통신시간 차이를 이용하여 비콘-로봇의 거리를 구하고, 삼각 측량을 통해 localization 수행
+* Ego-motion을 추정하기 때문에, proprioceptive sensor 같지만, 외부 비콘을 이용하기 때문에 exteroceptive sensor임.
+* 나라마다 시스템이 다름. (GPS-USA, GLONASS-Russia, BeiDou-China, Gallileo-Europe, KPS-Korea)
+* 장점 - 싸고 사용하기 쉬움.
+* 단점 - 부정확함 (10 - 20m 오차), RTK-GPS, DGPS를 사용할 경우 오차는 cm 단위로 내려옴 (가격이 억대)
+* 단점 - 고층 빌딩 사이에 multi-path 문제, 실내/지하 사용 불가능, KPS가 아직 없음.
 
+* LiDAR - Light detection and ranging sensors
+* 적외선 레이저를 쏘고 반사 시간을 측정하여 거리를 추정하는 센서
+* Time-of-Flight(ToF), Phase shift, Frequency modulation 레이저 방식
+* Mechanical scanner, Solid state scanner, Flash LiDAR 스캐닝 방식
+* 주변 환경을 3D Point Cloud 형태로 바로 알 수 있음.
+* 장점 - Exteroceptive 센서 중 가장 정확한 편, 자율주행용 라이다는 ~100m 유효거리, 빛의 파장이 일어나지 않기 떄문에 낮/밤 사용가능(동일한 device로 인한 간섭 제외)
+* 단점 - 비쌈(16ch - 500~600만원, 128ch - n천만원), 카메라에 비해 해상도가 낮음, 눈/비/안개 영향을 받음, Multi-path 문제, Solid-state LiDAR의 경우 여러 방향으로 탑재 필요
 
+* RADAR - Radio detection and ranging sensor
+* 반사되어 돌아오는 전파를 측정하여 radial 거리를 재는 센서
+* Doppler 효과를 이용해서 이동중인 물체의 속도 추정 가능
+* 전파의 종류를 바꿈으로써 nerar-range와 far-range 선택 가능
+* 장점 - 날씨 영향X, 타 센서에서는 얻지 못하는 속도 값 추정 가능
+* 단점 - 작은 물체들은 detection 실패, LiDAR 보다 낮은 해상도, Multi-path 문제
+* Tesla는 RADAR를 버렸다?
+* RADAR가 안좋은게 아니라, Tesla의 비전 시스템이 RADAR 성능을 상회했기 때문에 RADAR 사용 중지
+* Tesla는 딥러닝 특화 자율주행 컴퓨터가 탑재 되었기 때문임.
 
+* Ultrasonic
+* 초음파를 이용 - RADAR와 작동 방식 동일
+* 장점 - 저렴함, Near-range에서 잘 작동함.
+* 단점 - 물체의 형태를 잘 추정하지 못함. 그래서 많이 Distance 센서로 사용함, 노이즈가 많음.
 
+* Camera
+* 광센서를 이용해 빛 신호를 받고, debayering 프로세스를 통해 RGB 색 재구성
+* 장점 - 저렴함, 좋은 성능(dense data, texture, color, high-fps) 렌즈 교환을 통해 시야각 변경 가능, 사람이 보는 시야와 가장 유사함. (시각화하기 좋은 자료)
+* 단점 - depth 정보 손실, 조명 영향
 
+* Microphone
+* 공기의 진동을 transducer 센서를 통해 전기 신호로 변환하는 센서
+* 여러개의 마이크를 통해 소리의 근원에 대한 위치를 계산 가능
+* 장점 - 유일하게 소리 정보를 사용하는 센서, 저렴한 가격
+* 단점 - Geometry가 부정확함, 잡음이 심함, 고객이 없음.
 
+### SLAM의 종류
+* Visual-SLAM
+* Visual 정보(이미지)를 이용하는 SLAM - Exteroceptive sensor = 카메라
 
+* LiDAR SLAM
+* LiDAR 정보를 이용하는 SLAM - Exteroceptive sensor = 라이다
 
+* RADAR SLAM
+* RADAR 정보를 이용하는 SLAM - Exteroceptive sensor = 레이다
 
+* Visual-SLAM
+* Visual 정보(이미지)를 이용하는 SLAM - Exteroceptive sensor = 카메라
+* 장점 - 저렴한 센서를 사용, 센서의 성능을 조절하기 쉬움 (렌즈교체 - 시야각, 초점 조절, 노출 시간)
+* 장점 - 센서의 속도가 빠름, 이미지 기반 딥러닝 적용 가능, 이미지로 사람이 이해하기 쉬운 시각화 가능
+* 단점 - 갑작스러운 빛 변화에 대응 불가능, 시야가 가려지거나 어두운 곳에서 사용 불가능
+
+* Camera = Camera device + Lens
+* 센서가 어떠한 노이즈를 가지고 있는가를 측정해야함.
+* 3D 이미지를 2D 이미지로 변환하기 떄문에, 이 과정에서 생기는 한계점에서 노이즈가 나타남 (이미지 센서 - 아날로그를 디지털로 변환 하는 과정, 렌즈 - 차원의 변화에서 나타나는 오류 등)
+* Monocular camera - 1대 카메라
+* Stereo camera - 2대 카매라 / Multi camera - N개 카메라
+* RGB-D Camera (depth camera)를 사용
+
+* Monocular camera
+* 특징 - 1대의 카메라에서만 이미지를 받음 (연구용 알고리즘이라는 인식이 있음)
+* 장점 - Stero, Multi camera VSLAM보다 저렴함 (센서 가격, 전력소비량, 이미지 데이터 송수신 대역폭)
+* 단점 - Scale ambiguity - 3D 공간을 실제 스케일로 추정할 수 없음. (up-to-scale로만 추정가능)
+* 이문제를 풀기 위해서는 metric scale을 가진 proprioceptive sensor가 필요함.
+* Metric scale : 실제 세상에서 통용되는 미터 단위 - metric의 스케일
+* 최근 딥러닝 기반 monocular depth estimation으로 문제를 해결하려는 시도가 있음.
+* 이전에 촬영 하였던 카메라 데이터와 현재 데이터를 이용하여 3D를 추종함. - 그리고, 명암의 차이가 큰 부분을 포인트로 삼음.
+* 이러한 Monocular로 진행하는 SLAM을 sparse(depth) SLAM이라고 함. - dense SLAM과 비교해서 계산량이 적음.
+
+* Stero / Multi camera VSLAM
+* 특징 - Stero : 2대의 카메라를 사용함, Multi : N대의 카메라를 이용함.
+* 특징 - 인접한 카메라들 간의 baseline 거리를 이용하여 삼각측량을 통해 거리/깊이 측량 가능.
+* 장점 - 두 이미지 간의 displarity 정보를 이용하여 픽셀마다 depth를 추정할 수 있음. Metric scale의 3D 공간을 복원가능
+* 단점 - 카메라 설정 및 캘리브레이션이 어려움.
+* * 모든 카메라는 동시에 이미지를 취득해야함 (synchronized cameras)
+* * Baseline이 충분히 길어야 먼 거리의 3D 공간을 정확하게 측량할 수 있음.
+* * 카메라들마다 Intrinsic / Extrinsic 캘리브레이션을 정확하게 해야함. 이 과정이 불가능하기도 함.
+* 단점 - 모든 픽셀마다 disparity 정보로 depth를 계산하는데에는 많은 계산량이 필요하며, 이를 위해 GPU나 FPGA 계산을 요구하기도 함.
+
+![image](https://user-images.githubusercontent.com/55529455/169829310-999c3eb5-170d-4482-9446-5ba08c7b22ea.png)
+
+* RGB-D VSLAM
+* 특징 - Structured light (구조광), 또는 Time-of-Flight (ToF)센서를 이용한 카메라를 사용
+* * 센서가 Depth 값을 직접 얻어주기 때문에 계산이 필요하지 않음.
+* 특징 - Dense mapping을 많이 하는 편
+* 장점 - Depth 데이터를 통해 3D 공간을 metric scale로 실시간 복원 가능
+* 단점 - ~10m 정도에서만 depth 데이터가 정확함. Filed of view가 적음. 실외에서 사용불가 (적외선 파장이 햇빛과 간섭)
+
+### SLAM 기술의 적용
+* SLAM에서 가장 상업화에 성공한 로보틱스 - 로봇 청소기
+* (천장을 보면서 위치를 추종, 초음파 센서로 장애물 감지) - 지도 정보가 없기 때문에, 처음보는 장소에서 움직이며 맵을 그림 (그러다보니 청소가 됨)
+* Active SLAM - SLAM + Path Planning을 동시에 풀려고 하는 것.
+
+* 산업 현장 측량 및 스캐너 로봇 / 모니터 로봇
+* 벽과 바닥이 평평한지, 위험한 곳을 탐지하기 위해서 사용됨. 삼각대와 측량기를 이용해서 할 필요 없이 로봇이 매핑하여 값을 구함.
+* 인건비와 사람의 실수와 수고가 덜어짐. - 이 로봇을 제어하는 원격 전문가가 생길 수도 있음.
+
+* 배달 / 믈류 로봇
+* 건설 로봇
+* 서비스 로봇 (무빙 키오스크, 캐리어 로봇)
+* 위험지대 탐사 로봇
+
+* 자동차 (드라이빙, 자동 주차)
+
+* 드론 (구조 검사 / 스캐너, 액션캠 / 촬영용 드론)
+
+* VR / AR / XR / MR (가상 컨텐츠, 산업용 증강현실, 의료진단 / 원격 의료 / 트레이닝)
+
+### SLAM 특성
+* 자율주행 로보틱스
+* 제품화를 위한 규제, 자유로운 알고리즘 개발, 하지만 전세계적으로 경쟁
+
+* 자율주행 자동차
+* 높은 수준의 딥러닝 솔루션 존재, 딥러닝 + SLAM, 안전한 SW
+
+* 자율비행 드론
+* 제품화를 위한 규제, 가장 빠른 SLAM을 요구함.
+
+* 메타버스 - VR / AR
+* 가장 자유로운 개발 규제, 빠르고, 정확하고, 가벼운 SLAM 알고리즘
 
 
 
