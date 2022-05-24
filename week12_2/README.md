@@ -104,12 +104,34 @@
 
 * build 3rd party libraries from source - python 처럼 pip가 없다.
 * Make C++ project - load your haeder, source file | Load 3rdparty libraries | configure output executables, libraries
-* 
 
+## 선형대수 Primer
+* Vector
+* computer vision = list of variable, list of values - vector\<int\> vec = \{1, 2, 3\}
+* physics = vector : object with magnitude and direction (F = ma)
+* Mathematics = vector : A coordinate in space (x, y, z) in 3D Euclidean space
 
+* Matrix
+* Collection of vectors
+* vector = 1D, Matrix = 2D
+* Matrix = A map from a vector to another
 
+![image](https://user-images.githubusercontent.com/55529455/170010172-7c51d93b-fa17-4bf3-8316-b3c68154fb48.png)
+![image](https://user-images.githubusercontent.com/55529455/170025301-63c0b1f2-be56-4091-b204-424182fafa90.png)
+![image](https://user-images.githubusercontent.com/55529455/170025333-df5e718d-56bc-48d1-bcee-2559a45f4cf7.png)
+![image](https://user-images.githubusercontent.com/55529455/170025385-1c8dbd25-c35f-423c-a041-370fe264a4cf.png)
+![image](https://user-images.githubusercontent.com/55529455/170025431-0f34130a-291d-49ec-a1e9-f125b45c2582.png)
 
+* Matrix decomposition
+* schur, LU, QR, Cholesky
+* Composite matrix -> Factorized matrices
 
+* SVD
+* U, S, V^T로 표현함
+* U, V^T 꽉찬 dense
+* S 는 대각행렬
+
+![image](https://user-images.githubusercontent.com/55529455/170025690-cdb6d04e-a3d7-4398-8b0b-fff4f2c9e24f.png)
 
 
 
