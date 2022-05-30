@@ -117,5 +117,158 @@
 
 ![image](https://user-images.githubusercontent.com/55529455/170949146-1e91fed4-e640-42f8-adee-cd4503279754.png)
 
+## Outlier removal
+### Outlier rejection
+* SLAM 의 데이터는 2가지로 나뉨.
+* Inlier data - 좋은 데이터 : 관측 시 예상했던 데이터 분포수를 잘 들어 맞는 데이터
+* Outlier data - 나쁜 데이터 : 데이터의 분포에서 현저하게 벗어나있는 관측 데이터
+* 보통 데이터 분포 모델에서 부터 얼마나 에러값을 가지는지 판단. - 모든 데이터는 노이즈를 가짐.
+* 단순히 에러값으로만 판단 할 수 없음. - 올바른 이미지임에도 높은 노이즈로 인해 에러를 가진다면?
+* 검출된 픽셀에 F-matrix 곱하면 오른쪽의 Correspondence 위치가 나옴.
+* 디스크립터 결과가 나왔다 해도, F-matrix 했을 때, 오류가 나옴을 확인할 수 있음.
+* F-matrix의 검증을 통해 Inlier, Outlier 결과가 나옴.
+* Outlier 가 나오는 전제조건 - 급격한 조명, 회전, 가림, 모션블러와 같이 깔끔한 데이터 못얻거나, 기하학 조건이 깨질때
+---
+* 컴퓨터 비전에서의 2가지 종류의 알고리즘
+* Closed-form algorithm - 수많은 미니멀 알고리즘, 정확한 기하학적 조건을 가지고 있을 때 작동되도록 설계됨. (8-point)
+* Iterative optimization - 많은 데이터 가지고 있을 수 있지만, 모든 데이터가 1개의 결과가 나올때까지 반복함. 패턴을 찾는 것이 목적. 분포를 따르지 않는 결과가 있다면 잘못될수도.
+* 오염된 raw data에서 outline을 제거하여 깔끔한 inline 데이터만으로 계산할 수있도록 만드는 것이 중요.
+---
+* ex) line fiiting (linear regression)
+* linear regression - 2d plot에서 여러개 데이터 있을때, 가장 정확한 직선을 가로지르는 것을 찾는 것.
+* 어떤 직선이 더 정확하게 가로지르는가? 척도가 필요함.
+* SSE - Sum of squared error = 거리의 제곱근
+* SAE - Sum of absolute error = 거리의 절대값
+* 이 데이터 셋에 outlier가 있다고 하자.
+* 그래프를 봤을 때, M1이 더 정확한 데이터 일 것이다. - 4개가 사람이 봤을 때, 통계적으로 더 높기 때문에.
+* 알고리즘 입장에서는 뭐가 이상한지 모름 - 4개 점이나 1개 점 모두 같은 데이터.
+* 4개의 점의 오차보다 1개의 점 오차가 크기 때문에 M2가 에러치가 더 낮음.
+
+![image](https://user-images.githubusercontent.com/55529455/170965665-fc0d219d-2150-41f9-b5d7-f12e82557b8a.png)
+
+* 데이터 사이에 outlier가 있으면 오류 수정이 어려움.
+* 단 하나의 outlier 때문에 잘못된 추론이 나올 수 있다.
+* 이전엔 20% outlier지만, 실제로 80% outline의 경우에도 추론이 가능해야함.
+
+## RANSAC
+* Fischler & bolles가 개발한 알고리즘
+* Random Sample Consensus
+* Random - 무작위하게
+* Sample - 데이터 샘플을 뽑아 모델을 만들고
+* Consensus - 모델에 대한 데이터의 합의도를 알아봄
+* 모델은 무엇이지? - RANSAC은 템플릿 알고리즘이기 때문에, 프레임워크 뿐이고, 실제로 안에서 돌아가는 알고리즘은 따로 있다.
+* ex) homography, essenital matrix, fundamental matrix
+* 정확하게 추론하고 싶어하는 결과를 뜻하는 것.
+* fundamental matrix로 예시를 들면, input 데이터에 outlier 데이터가 껴있으면 8-point가 잘 동작하지 않음.
+* 따라서, input 데이터를 랜덤하게 뽑아서 fundamental matrix를 구하고, 다른 데이터도 구해서 정확하게 뽑았는지 평가를 수행함. - 이러한 과정을 모델 추론이라고 함.
+---
+* RANSAC 작동방식
+* 랜덤하게 minimal set of data(모델 실행을 위한 최소한의 데이터 수)를 뽑음 - ex) 8-point는 8개 데이터를 뽑음.
+* 뽑은 데이터를 기반으로 모델을 추론함.
+* 모델 스코어를 측정함. (알고리즘마다 다름, Current score > so-fat-best-score 이면, update score)
+* 계속 반복한다.
+---
+* Homography RANSAC 작동방식
+* 4개의 피쳐 데이터를 뽑음. - 4쌍의 피쳐 매칭이 필요하기 때문에
+* 뽑은 데이터를 기반으로 호모그래피 매트릭스를 추론함. - 왼쪽 이미지의 픽셀값에 호모그래피 매트릭스를 곱해봄.
+* 오른쪽 이미지 feature consensus 위치에 픽셀이 올라오는데, 데이터에 노이즈가 있으면 정확하게 안되어 있을 것임.
+* 해당 픽셀의 거리 차이만큼의 에러만큼 모두 더하면 reprojection error 라고 함.
+* 특정 거리 값에 대한 임계값을 지정해서 (2픽셀 이상 떨어진것을 에러라고 한다던가..)
+* Current score > so-fat-best-score 이면, update score
+* 계속 반복한다.
+---
+* 언제까지 돌려야하는가?
+* T는 우리가 돌려야 할 최적의 루프 횟수
+* P는 우리가 뽑은 모델이 모두 inlier으로 이뤄줘야할 확률
+* E는 전체 데이터 수의 inlier, outlier의 수
+* S는 매 루프마다 샘플링 해야 할 수
+
+![image](https://user-images.githubusercontent.com/55529455/170981415-7ab8e98c-3a78-4474-9385-b7d19acf86f6.png)
+
+* RANSAC 장점
+* 성공 하면, inlier 만으로 로 모델을 추론하고, 데이터셋에서 outlier을 제거 할 수 있음.
+* 전체 프로세스 시간을 예측할 수 있다.
+* 언제 끝날 지 알 수 있다. - 성공과 실패를 구분 하는 좋은 지표
+* 이해하기 쉽다.
+
+* RANSAC 단점
+* 랜덤성 알고리즘으로 결과값이 다르게 나옴 - 동일한 데이터 셋으로도 성공 실패가 갈림.
+* 전체 데이터셋의 inlier 보다 outlier가 많으면 실행시간이 엄청 늘어남.
+* 실패하게 되면, 모든 가능성을 고려하게 되는 방향으로 수렴하게 됨.
+* 하나의 데이터 셋에서 여러 데이터 모델을 추출 할 수 없음.
+
+
+## Modern RANSACs
+* 기존 RANSAC의 한계로 인해서 해결할 수 없는 점들이 있음.
+* 기존 RANSAC이 단순하기 때문에 조금 수정하면 모델 추론이 더 빨라지고 안정적으로 됨.
+* 데이터셋의 분포 알고있어도, 모델 추론의 prior 정보가 있어도 활용할 수 없었음.
+* 샘플링된 데이터에 노이즈가 있어도 노이즈가 없는 것처럼 다뤄지는 경우도 있었음.
+* 요즘 컴퓨터 비전 튜토리얼에서 RANSAC은 구리다라고 할 정도로 바뀜.
+* 개량 RANSAC에 대한 정보를 알아보자.
+---
+* 개량 RANSAC에 대한 배경상황
+* 대부분 모른다!
+* OpenCV에서 사용하는 RANSAC은 스탠다드임.
+* OpenCV 4.5 버전에 RANSAC 개량 버전이 들어왔음.
+* 개량 RANSAC은 종류가 많다. 다양한 것들을 공부해보고, 적합한 것이 무엇인지 결정해야함.
+* 여러 방법론의 장점을 따와서 커스터마이징 가능함.
+* PROSAC, Lo-RANSAC을 조합해서 하는 방법이 강사님의 추천
+---
+* Early-stop method - 운좋게 RANSAC을 바로 찾았을 때, RANSAC을 끝내는 것. (자원을 아낄 수 있다.)
+* 3가지 변수를 미리 정해놔야함.
+* minimum iteration - 최소한 돌아야 하는 반복 횟수
+* maximum iteration - 최대한 반복 횟수 - 일정 횟수 이상이면 실패했다고 하는 것.
+* success score - 성공 지표 - 이 지표를 넘어서면 성공이라 판단, 탐색 종료
+---
+* PROSAC
+* 매칭에 특화된 RANSAC, data prior를 잘 이용한 예시
+* 전제 조건 : 디스크립터 매칭측정 a2_norm, hamilton_distance을 측정하는데, 피쳐 디스크립터간 디스턴스가 적은 매칭일수록 모델 추론때 더 정확히 추론될 가능성(inlier 가능성)을 봄.
+* Random Sampling 과정을 좀 더 낮은 디스턴스를 가지는 디스턴스 매칭 샘플링으로 바꿈.
+* 점점 더 높은 distance를 가진 디스크립터 매칭 샘플링 기법을 사용.
+* 프로그래스 하게 찾는다.
+* 프로삭이 완전히 실패하는 케이스도 기존의 란삭의 성능에 수렴함. - 성능이 무조건 좋을 수 밖에 없음.
+---
+* PROSAC 알고리즘
+* 2개의 이미지가 있으면 distance matching 수행, 매치마다 distance 값을 기록
+* 매치된 값들을 담은 벡터가 있으면 오름차순 정렬
+* PROSAC에서 몇개 까지 검사할 지 pool size를 정해줌.
+* RANSAC 과정 수행. (여기서, 낮은 값이 나오면 search pool을 늘려줌)
+* 5개 ~ 10개 정도에서 찾는 경우가 많다.
+---
+* Lo-RANSAC
+* 이 또한, 데이터 패턴을 잘 활용한 예시임.
+* inlier 끼리 뭉쳐있고, outlier는 상대적으로 떨어져 있는 경우가 많았음.
+* 이 점을 잘 이용 하였음. 정답은 근처에 있고, 랜덤한 위치로 이동 할 필요가 없다는 점을 사용.
+* 한 번 루프에 작은 inner RANSAC을 해서 더욱 정확한 값을 얻으려고 함.
+* optimization이 되니, 정답에 가까울 수 밖에 없음. - cost find approch
+---
+* Lo-RANSAC 알고리즘
+* 기존의 RANSAC과 동일한 minimal-set-data 설정
+* 모델 추론 - 모델 스코어가 너무 적으면 끝내고 바로 재시작
+* 성적이 좋으면 새로운 내부 RANSAC을 실행함. 
+* 평가 했을 때, inlier라고 판단되는 데이터를 새로운 데이터 셋으로 다루면서 새로운 RANSAC을 함.
+* inlier로 하다보니 더 좋은 결과가 나올 수 밖에 없음. (가우스-뉴턴, 레벤버그 마르카르트 최적화 알고리즘 사용 해서 정답을 최적화)
+* 계속 반복
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
