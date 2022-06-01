@@ -106,6 +106,122 @@
 * V-odometry - 누적된 드리프트를 제거 할 수 있는 방법, 글로벌 스케일로서 그래프 옵티마이저가 불가능
 * V-SLAM - 반대로 있다.
 
+## Bundle Adjustment
+* 2-view 지오메트리를 사용하면서 2d-2d correspondences가 있고 이를 통해 E-matrix, F-matrix를 구해서 두 이미지의 R,T를 사전에 구함
+* 그걸 이용해서 3D 랜드마크 포지션을 구함.
+* Bundle Adjustment는 한단계 더 나아감.
+* n-View가 된다. R과 T 값을 가지고 있다.
+* 2d-2d correspondences가 있고 3D 랜드마크 포지션도 다 알려져있음. 하나의 랜드마크에 2개 이상의 correspondences가 생겨있다.
+* 모든 것을 다 계산 해놓은거 같지만, 로봇이 이동하면서 모션에 옵서베이션 노이즈가 프레임마다 생긴다. - 다 실제로 정확한 값이 아님.
+* 그렇기 때문에 이를 해결하기 위해서 batch SLAM 기법을 사용함. 2d-2d correspondences, 2d-3d correspondences, 모션을 이용해서 카메라 pose와 3d 랜드마크 위치를 보정
+* 보정을 한다? - 그래프 최적화를 통해 uncertainty(불확실성, 언설턴티)를 해결해준다.
+* 지난 강의에서 모션의 e와 옵서베이션 e 값이 필요하다고 했음 - 하나의 cost function으로 표현 가능함. - reprojection error
+* 3d 랜드마크와 카메라 pose가 완벽하게 일치했을 때, 이미지 플레인에 투영했을 때, 피쳐가 뽑힌 위치로 투영이 됨.
+* 하지만, 노이즈가 있기 때문에 항상 오차가 나타남. - 이를 재투영 에러라고 함.
+* 에러값을 줄이기 위해서 랜드마크가 키포인트 쪽으로 이동하느냐, 랜드마크가 고정이고, 카메라가 이동해서 ray로 가까이 가느냐로 해결.
+* total 재투영 에러를 줄이기 위해서는 최적의 카메라 위치와 최적의 랜드마크 위치를 찾는 것이라고 본다.
+* 선형적이지 않기 때문에 최적화 수식을 쓸 때, 미분으로 할 수가 없다.
+* 그렇기 때문에 비선형 최적화를 사용해야한다.
+* 비선형 공간을 어떻게 선형으로 바꾸어서 근사화 시켜 최적의 값으로 유추하는지? - 가우스 뉴턴 방식이 있음.
+---
+* Bundle Adjustment가 어떻게 사용되는가? 
+* 1. 루프 클로저를 수행할 때
+* factor 그래프에서 루프가 발생하면, 루프와 옵서베이션을 최소화 시켜줄 수 있음.
+* 2. sliding-window optimization 기법 사용
+* 그래프 최적화 하지만, 실시간으로 좋은 pose 추정할라는 알고리즘이 있다.
+---
+
+## Nonlinear optimization
+* 3d 랜드마크 위치 (Xi, Yi, Zi, 1)
+* 카메라의 회전, 이동 행렬 R, T
+* 카메라 내부 행렬 fx,fy,cx,cy,s - 모노 카메라를 쓴다면, 계산에서 제외됨. 다양한 카메라로 찍었을 때, 계산이 가능하게 만들었다.
+
+![image](https://user-images.githubusercontent.com/55529455/171414337-7501be89-5ffb-4a31-9b8f-66a0d2e07c94.png)
+![image](https://user-images.githubusercontent.com/55529455/171414832-09a5c536-148d-4911-9254-2990b4c0cdda.png)
+
+---
+* BA 최적화 문제는 최종 재투영 에러의 최소값을 가지는 상태는 어떤 pose인가?
+* 이문제를 풀기 위해서 최소자승법을 사용. 단, 가우시안 분포도를 사용한다는 전제가 깔림.
+* 가우시안을 사용하는 이유? - 가우시안 데이터를 사용할 때, 최소자승법이 Maximum Likelihood Estimation (MLE) 문제로 수렴됨.
+* MLE 문제는 통계적으로 해결 했을 때, 수식적으로 최적값을 가진다는 것이 보증되어있음.
+* MLE 문제를 푸는 것이 다른 방법에 비해 간단하기 때문이다.
+* 위의 식에서 가우시안이 추가가 된다.
+* 2번째 사진 E(x)은 1번째 사진의 결과값이다.
+* 델타x로 바뀌기 때문에, 안의 값도 델타 x의 값으로 바꿔서 식을 변형함.
+* 3번째 사진은 비선형적인 식을 미분하여 선형적으로 바꿔주는 것이다.
+* 테일러 공식을 이용하여 1차 미분에 대한 근사값을 얻을 수 있음.
+* Ji - 자코비안 (1차 미분값 매트릭스)
+* 4번째 사진은 1차 미분한 값을 가져온 사진이다.
+* 2차 방정식으로 정리가 된다.
+* 2차 방정식은 최소값, 최대값이 나오게 된다. - 이를 델타x에 대해 1차 미분해주면 5번째 사진이 된다.
+* 무슨뜻이냐? x0 시작값에서 1차 미분하면 근사 2차 방정식이 나옴.
+* 2차 방정식의 나온 값의 최소값이 나오면 옵티멀하다고 생각한다. - 글로벌 옵티멀하지 않음, 근사값이기 때문. 가깝다고만 생각함.
+* x0과 x1의 이동치를 구했다고 생각함. 이 과정을 반복함으로써 x2를 구하고, x1과 x2의 이동치를 구하고... 점진적으로 솔루션에 가까워짐.
+* 이를 인터렉티브 옵티마이제이션이라고 함.
+
+![image](https://user-images.githubusercontent.com/55529455/171416376-f60ba28e-d234-4c93-b85b-a9e4f5df42d0.png)
+![image](https://user-images.githubusercontent.com/55529455/171416680-8e852d30-e32b-480b-9f75-18e25c5bc408.png)
+![image](https://user-images.githubusercontent.com/55529455/171416739-6252b78c-a2f2-43cc-b2c7-6bf0f7606ce2.png)
+![image](https://user-images.githubusercontent.com/55529455/171417045-28be8e2a-10b8-46aa-b08a-cf407666d24b.png)
+![image](https://user-images.githubusercontent.com/55529455/171417240-506c399b-2e19-425f-88f4-008e99bd08ae.png)
+
+---
+* 굉장히 어려움!
+* H 행렬 크기가 매우 큼.
+* 예시 사진. - 2만개의 사진, 18개의 이미지 포인트
+* 보통의 방법으로는 구하기 힘든 행렬임. - VSLAM은 1천개 이미지 뽑고, 이미지 포인트가 100개가 넘어감..!!
+
+![image](https://user-images.githubusercontent.com/55529455/171418237-d60ebd0f-85ca-480e-8bb7-9d2d6701d48c.png)
+
+---
+* 자코비안 매트릭스는 대부분 매트릭스가 비어있다는 점을 알 수 있다.
+* factor마다 연결성을 미분한 매트릭스인데, 노드들은 인접한 정보는 연결되어있지만, 멀리떨어져있으면 연결이 안되어있음 (x1, x3의 관계)
+* 이러한 매트릭스를 Sparse 매트릭스라고 함.
+* b 매트릭스 또한 많이 비어 있음! - 자코비안 매트릭스가 비어있기 때문에.
+* H 매트릭스 역시 많이 비어 있다. - 이 또한 같은 이유
+* Sparse 쓰는 방법이 좋은 방법은 아님.
+* Schur Complement 방법이 있음.
+
+![image](https://user-images.githubusercontent.com/55529455/171418496-b8efed82-2f98-4066-bb31-9b884a867999.png)
+![image](https://user-images.githubusercontent.com/55529455/171418873-406257cf-7306-4844-8ef9-f4e2a67eb82f.png)
+![image](https://user-images.githubusercontent.com/55529455/171418986-3edbbfe7-193f-43cb-8623-4a9f84732fbd.png)
+![image](https://user-images.githubusercontent.com/55529455/171420447-7a3ed25a-9ce2-4c60-9745-b547667803b0.png)
+![image](https://user-images.githubusercontent.com/55529455/171420523-b4dcce77-c2d2-46f0-aefc-9cc959c9f607.png)
+
+---
+* Schur Complement
+* Hs(B) 랜드마크의 x, y, z location에 대한 정보가 올라와 있음
+* Hc(C) 카메라 pose의 x, y, z의 정보가 올라와 있음.
+* Hs가 적은 이유는 로봇이 움직여도 동일한 포인트를 보고 있을 확률이 높아서 파라메터가 작음.
+* Hsc는 옵서베이션의 식에 대한 정보
+* 이 식을 풀기 위해서 양쪽 변에 2번째 사진 중앙에 있는 행렬을 곱함.
+* 델타 c만으로 아래 식을 구할 수 있다. - Schur Complement 식이라고 함.
+* 이미 다 있는 데이터이기 때문에 가져오면 됨. 하지만, Hs의 역행렬을 구해야함.
+* 역행렬 구하기는 쉬움. 생각보다 빠름.
+* 역행렬을 구하고 나면, Ax = b 형태로 나타남. Schur Complement 부분이 A가 됨.
+* 하지만, Ax = b 를 x = A^-1b 형태의 역행렬로 하기가 큼.
+* 일일히 하나씩 역행렬 해주기 어렵기 때문에, 행렬 계산을 해서 하나의 큰 행렬로 만들어서 역행렬을 쉽게 할 수 있는 행렬로 분해할 예정.
+* LU decomposition을 사용함.
+* 델타C를 구했으니, 델타S를 구하면 됨. 델타C - 카메라 파라메터가 어떻게 바뀌어야 델타s를 가지냐?
+* 델타S는 3D 랜드마크 포지션이 델타x의 입장에서 파라메터가 얼마나 바뀌어야하는가?
+
+![image](https://user-images.githubusercontent.com/55529455/171421180-97dabbca-a667-4326-823a-87735782aaed.png)
+![image](https://user-images.githubusercontent.com/55529455/171421926-a94c86dc-dd16-47c0-a4a5-b34a5f40ef32.png)
+![image](https://user-images.githubusercontent.com/55529455/171422614-4160d067-7dde-44f1-980f-affd63bc1da8.png)
+![image](https://user-images.githubusercontent.com/55529455/171422801-64e48cc3-62c4-4a4c-8f6b-0081af451d4e.png)
+
+---
+* 최소자승법을 할때 주의해야할 점
+* 최승자승법이 outlier에 매우 취약한 방법임.
+* MSE 커널을 사용해서 데이터 분포를 벗어나는 outlier를 옵티마이제이션 식에서 제외하는 방법을 사용해야함.
+---
+* 이 방법을 사용 할 수 있는 라이브러리
+* Google Ceres-solver
+* G2o
+* GTSAM
+
+
+
 
 
 
