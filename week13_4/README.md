@@ -74,12 +74,38 @@
 * 그 이전의 것은? 그대로 나눈다. 이미 좋은 데이터라고 판단하는 것. 최근의 것은 Need Optimization.
 * loop 인지 아닌지 구분 하고, 루프라면, 최적화를 해줘버림. 랜드마크 업데이트는 안하는듯.
 
-
 ![image](https://user-images.githubusercontent.com/55529455/171588893-23e741f2-6df5-4d4d-b2be-e9c7e10cf818.png)
 
+---
+* ORB features를 써서 FAST를 쓰고, BRIEF를 써서 (located BRIEF) 만듬.
+* Automatic initialization
+* Homography solver - Panar scene - 평면의 씬에 대해서 맵을 만들때 좋음.
+* Fundamental matrix solver - Complex scene - 울퉁불퉁한 씬에 대해서 맵을 만들때 좋음.
+* 카메라에서는 울퉁불퉁한지, 평면인지 알 수가 없음. 따라서 2개를 써서 임계값을 줘서 결정함.
+* epipolar geometry를 만들때 상하 베이스로 있어야하는데, 앞뒤 베이스는 생기지 않음.
+* 이는, init map을 만들때는 잘못만들어지면 프로그램을 껏다 켜야하는데, 이를 판단하는 기능이 생겼다 볼 수 있음.
+---
+* Co-visibility graph (co-같이, visibility-가시성) - 사진 b
+* 서로 바라보는 랜드마크가 분명히 있는데, 동일한 객체를 바라보는 키프레임끼리는 연관된 데이터 셋이 있을테니 표시를 해주는 것.
+* 동시에 같이 바라보고 있는 것에 대한 그래프
+* Essential graph - 사진 c
+* 정말 중요한 데이터 셋만 남겨놓는 것. 
+
+![image](https://user-images.githubusercontent.com/55529455/171590902-9ac17da5-6e01-44f2-8c5d-bd18336066c6.png)
+
+---
+* Relocalization
+* Bag-of-visual-words - ORB feature를 이미지에서 뽑아서 클러스터링 해서 비슷한 이미지끼리 학습 시켜놓음. 
+* 새로운 이미지가 있을 때, feature를 뽑고, bag-of-visual-words로 바꿔서 매칭하면 빠르게 구할 수 있다.
+* vocabulary로 만들어서 트리 구조로 만듦. 실제 데이터가 들어왔을 때, 트리 searching 해서 어떤 비쥬얼 워드인지 확인함.
+
+![image](https://user-images.githubusercontent.com/55529455/171591749-56043168-4e38-430b-bcc4-50b27f63d77e.png)
 
 ## ORB-SLAM2 (2017)
-
+* 1에서는 좋은 설명 비디오가 없음.
+* 1에서는 monocular 카메라를 썼다면, 2부터는 stereo, RGB-D 카메라 사용함. 조금 더 안정적인 알고리즘을 넣음.
+* stereo는 처음부터 depth를 알기 때문에 조금 더 정확하게 SLAM을 할 수 있게 됨.
+* RGB-D는 조금 다름. dense하게 뽑아내는게 있는데, ORB-SLAM은 단순히 RGB이미지에서 피쳐를 뽑은거에서 depth를 초기화 해주는 정도만 씀.
 
 
 
