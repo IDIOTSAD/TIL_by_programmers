@@ -107,8 +107,11 @@
 * stereo는 처음부터 depth를 알기 때문에 조금 더 정확하게 SLAM을 할 수 있게 됨.
 * RGB-D는 조금 다름. dense하게 뽑아내는게 있는데, ORB-SLAM은 단순히 RGB이미지에서 피쳐를 뽑은거에서 depth를 초기화 해주는 정도만 씀.
 
+## ProSLAM (2018) (Schlegel)
+* 성능이나 새로운 방법론 보다는, SLAM 엔지니어로써 시스템을 만들어야하는데, 시스템 아키텍쳐가 굉장히 좋음.
+* 처음 공부할 때 이걸로 하면 좋다!
 
-
+![image](https://user-images.githubusercontent.com/55529455/171593628-80540f96-6e6b-42f5-a2f6-49c2c73327aa.png)
 
 
 
